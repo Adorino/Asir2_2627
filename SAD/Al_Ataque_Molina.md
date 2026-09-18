@@ -6,7 +6,8 @@ Para esta practica vamos a simular un ataque, para ello vamos a usar la herramie
 En esta imagen se puede ver como instalé la herramienta de Pydictor usando los siguiente comandos en la terminal, en estos comandos cloné el repositorio oficial y después entré en la carpeta del programa.
 
 Para comprobar su funcionamiento usaremos el comando de python3 pydictor.py y como se puede ver en la imagen, el comando mostró la siguiente respuesta.
-"<img width="661" height="526" alt="Captura de pantalla 2026-09-18 121317" src="https://github.com/user-attachments/assets/2efac216-05a3-4d5e-846b-bc6329fd042e" />
+"
+<img width="661" height="526" alt="Captura de pantalla 2026-09-18 121317" src="https://github.com/user-attachments/assets/2efac216-05a3-4d5e-846b-bc6329fd042e" />
 
 Ahora para instalar la segunda herramienta llamada Dymerge se usará el comando de "git clone https://github.com/k4m4/dymerge.git, después accedí al directorio que se creó igual que con Pydictor.
 <img width="615" height="175" alt="Captura de pantalla 2026-09-18 121405" src="https://github.com/user-attachments/assets/dde66aa2-0f9f-405a-a586-682ccebc0f79" />
@@ -47,6 +48,7 @@ Tambien se podria usar la herramienta de fail2ban que si detecta varios intentos
 # Utilizar diccionarion con Hydra para simular un ataque de fuerza bruta con HTTP (formulario web)
 
 Para este apartado tendremos que instalar y configurar la herramienta de DVWA desde github con el comando, primero accediendo al directorio web.
+También tendremos que comprobar que tenemos apache habilitado.
 
 Para ahora configurarlo como una aplicación web vulnerable en el servidor Apache local, usaremos:
 sudo chown -R www-data:www-data /var/www/html/DVWA
@@ -54,15 +56,28 @@ sudo chmod -R 755 /var/www/html/DVWA
 
 <img width="666" height="429" alt="Captura de pantalla 2026-09-18 130438" src="https://github.com/user-attachments/assets/f9e568c9-ac2f-4700-85b0-95509e60a6dd" />
 
-Para llevar a cabo el ataque de fuerza bruta usando hydra usaremos el comando de hydra -l admin -P diccionario.txt 127.0.0.1 http-post-form "/DVWA/login.php:username=^USER^&password=^PASS^&Login=Login:F=Login failed" este comando hará que hydra busque la contraseña de forma bruta, y buscando contraseñas en el archivo de diccionario. Tambien hay que habilitar apache usando el comando de "sudo systemctl enable apache" y después comprobarlo con "sudo systemctl status apache".
+Tras tener todo preparado tendremos que abrir DVWA, para esto desde el Navegador vamos a la web http://127.0.0.1/DVWA/, que nos llevará a la instalación de DVWA, en esta pagina entraremos a DVWA security y vamos a bajar la seguridad a baja. (hubieron errores al buscar http://127.0.0.1/DVWA/, tuve que crear las bases de datos en mariadb, para ello instale mariadb.
+<img width="807" height="561" alt="image" src="https://github.com/user-attachments/assets/ddb7564e-3136-4795-9359-60ca45c81cf3" />
 
-"/DVWA/login.php \(\rightarrow \) :"Ve a esta página exacta".
-:username=^USER^&password=^PASS^&Login=Login \(\rightarrow \): "Escribe el diccionario en la casilla llamada 'username', la contraseña en la llamada 'password' y luego haz clic en el botón 'Login'".
-:F=Login failed" \(\rightarrow \): "Si tras hacer clic lees en la pantalla las palabras 'Login failed', significa que fallaste. Sigue intentando con la siguiente palabra".
+Tras esto tuve que comprobar que DVWA tengra las mismas credenciales en su archivo.
+<img width="648" height="508" alt="image" src="https://github.com/user-attachments/assets/5cf85718-3b4f-4dcf-a6c8-a0ae87411d7c" />
 
-<img width="631" height="338" alt="Captura de pantalla 2026-09-18 131654" src="https://github.com/user-attachments/assets/ba8c0847-0220-4de3-a82c-3063455aed50" />
-Este resultado es un falso positivo, ya que dice que todas las contraseñas son correctas, cosa que es falso.
+tras esto pude iniciar DVWA en el buscador y bajar la seguridad.
+<img width="1317" height="659" alt="image" src="https://github.com/user-attachments/assets/34e82940-6aef-427e-b718-625e3bc4bb74" />
 
-Para arregarlo podemos usar el comando corregido con Cookies, "hydra -l admin -P diccionario.txt 127.0.0.1 http-post-form "/DVWA/login.php:username=^USER^&password=^PASS^&Login=Login:F=Login failed:H=Cookie: PHPSESSID=TU_VALOR_AQUI; security=low""
+En esta pagina tendremos que bajar abajo y hacer clic en el boton que dice Create / reset data base. Tras esto nos dirigiremos a la parte de abajo que apareció tras hacer clic en el boton anteriomente dicho, y haremos clic en setup.
+<img width="594" height="413" alt="image" src="https://github.com/user-attachments/assets/3d840562-42c2-4437-b3de-58f85a713388" />
 
-Para Hydra, el éxito no significa "entré a la cuenta". Significa: "Envié una palabra y la página web NO me devolvió el texto 'Login failed'".
+ahora entraremos en este apartado para bajar la seguridad a low.
+<img width="1069" height="483" alt="image" src="https://github.com/user-attachments/assets/d3478bae-a483-4b0b-bb27-188dbd19248e" />
+<img width="924" height="464" alt="image" src="https://github.com/user-attachments/assets/bbfdcbe6-6a86-4897-ad1e-df91bba9942b" />
+
+Aqui se encuentra el formulario que Hydra usará.
+<img width="852" height="425" alt="image" src="https://github.com/user-attachments/assets/31eaa549-ed38-4797-a863-f262c2932ab9" />
+
+Sabiendo los datos investigando en DVWA sabemos que el comando para hacer el ataque será "hydra -l objetivo -P diccionario.txt 10.0.2.15 http-get-form "/DVWA/vulnerabilities/brute/:username=^USER^&password=^PASS^&Login=Login:F=Username and/or password incorrect.""
+<img width="651" height="381" alt="image" src="https://github.com/user-attachments/assets/3b399d8d-3327-4c63-a89f-07de2a7c80a8" />
+
+se tratan de falsos positivos.
+
+Para mitigar daños, se podria establecer un número máximo de intentos fallidos desde una misma cuenta, Incrementar el tiempo de espera después de cada intento fallido, Las contraseñas deben ser suficientemente largas y no utilizar información fácilmente predecible.
