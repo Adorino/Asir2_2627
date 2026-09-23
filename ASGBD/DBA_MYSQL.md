@@ -19,6 +19,9 @@ Empresa 1: Alcomer Boquerón Caliente, la configuración debe estar orientada a 
 | innodb_file_per_table | ON | Permite almacenar cada tabla InnoDB en su propio espacio de tablas, facilitando la gestión individual de las tablas y del almacenamiento. |
 | performance_schema | ON | Permite obtener información detallada sobre el rendimiento y la actividad del servidor, algo útil para detectar problemas en un entorno de alta concurrencia. |
 
+Para editar estos parametros vamos al archivo .cnf, en la siguiente imagen se puede ver su contenido y lo que vamos a editar. La ubicación de este archivo se encuentra en /opt/lampp/etc/my.cnf
+<img width="467" height="251" alt="image" src="https://github.com/user-attachments/assets/bfe05210-5281-43c8-a043-b94f63087e79" />
+
 
 
 
