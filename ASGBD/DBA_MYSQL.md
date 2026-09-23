@@ -48,7 +48,8 @@ SEGUNDA ENTREVISTA: Aquí la prioridad ya no es tener miles de usuarios haciendo
 | performance_schema | ON | Es útil para analizar el rendimiento del servidor y detectar qué operaciones o consultas están consumiendo más recursos. |
 
 Este es el resultado en la tabla de SQL en myphpadmin.
-<img width="384" height="289" alt="image" src="https://github.com/user-attachments/assets/ed64d5d7-baa2-4f3d-9221-28b19e99f1bc" />
+<img width="383" height="290" alt="image" src="https://github.com/user-attachments/assets/0a3e9f79-8b66-43b1-885f-a19e20f96d23" />
+
 
 TERCERA EMPRESA: una red social donde hay muchas personas conectadas al mismo tiempo, pero donde predominan las escrituras (publicaciones, comentarios, compartidos, modificaciones) frente a las lecturas. Además, aunque no necesita el nivel de concurrencia de un sistema financiero, sí necesita que los cambios realizados por un usuario sean visibles rápidamente para los demás.
 
@@ -71,7 +72,8 @@ TERCERA EMPRESA: una red social donde hay muchas personas conectadas al mismo ti
 | performance_schema | ON | Permite monitorizar el rendimiento del servidor y detectar problemas relacionados con la concurrencia y el consumo de recursos. |
 
 Este es el resultado en la tabla de SQL en myphpadmin.
-<img width="386" height="296" alt="image" src="https://github.com/user-attachments/assets/c0f3c433-7a4d-40ff-81ed-a2a1287476ef" />
+<img width="394" height="290" alt="image" src="https://github.com/user-attachments/assets/9ccd45bb-5c16-4cb8-aa23-f072907a2dd7" />
+
 
 
 
