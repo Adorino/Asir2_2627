@@ -1,4 +1,4 @@
-Empresa 1: Alcomer Boquerón Caliente, la configuración debe estar orientada a alta concurrencia, muchas lecturas/escrituras simultáneas, transacciones de compra e inventario y tiempos de respuesta bajos.
+PRIMERA ENTREVISTA: Alcomer Boquerón Caliente, la configuración debe estar orientada a alta concurrencia, muchas lecturas/escrituras simultáneas, transacciones de compra e inventario y tiempos de respuesta bajos.
 
 
 | Parámetro | valor | porqué |
@@ -22,8 +22,44 @@ Empresa 1: Alcomer Boquerón Caliente, la configuración debe estar orientada a 
 Para editar estos parametros vamos al archivo .cnf, en la siguiente imagen se puede ver su contenido y lo que vamos a editar. La ubicación de este archivo se encuentra en /opt/lampp/etc/my.cnf
 <img width="467" height="251" alt="image" src="https://github.com/user-attachments/assets/bfe05210-5281-43c8-a043-b94f63087e79" />
 
+Después de editar los datos en el archivo (no pude añadir varios parámetros que no estaban originalmente en el archivo ya que al iniciar php, xampp lee este archivo al parecer y si hay mas lineas de las que deberia de haber hay un error y phpmyadmin no funciona).
+En la pestaña de SQL se puede ver lo siguiente, por si acaso también pedí los parámetros que no he escrito en el archivo.
+<img width="1031" height="516" alt="image" src="https://github.com/user-attachments/assets/65fb81e3-e371-41bf-9453-4245726ec020" />
+<img width="381" height="291" alt="image" src="https://github.com/user-attachments/assets/7c736fc0-8cda-4b1c-9f50-58b6f956aa0d" />
 
+SEGUNDA ENTREVISTA: Aquí la prioridad ya no es tener miles de usuarios haciendo operaciones simultáneamente, sino trabajar eficientemente con grandes cantidades de datos históricos y consultas de análisis pesadas.
 
+| Parámetro | valor | porqué |
+| :--- | :--- | :--- |
+| innodb_buffer_pool_size | 70 | Se manejan grandes volúmenes de datos y muchas consultas de lectura. Tener una gran parte de los datos e índices en memoria puede reducir los accesos a disco. |
+| innodb_log_file_size | 512M | Hay grandes cantidades de datos, pero las operaciones de escritura son periódicas y no constituyen la carga principal. Un tamaño relativamente grande permite gestionar las escrituras sin que el log se quede pequeño rápidamente. |
+| max_connections | 150 | No necesita miles de usuarios simultáneos como Alcomer. Las consultas son pesadas, por lo que interesa evitar un número excesivo de consultas complejas ejecutándose al mismo tiempo y consumiendo todos los recursos. |
+| query_cache_size | 0 | Las consultas son complejas y trabajan con grandes volúmenes de datos. Además, la caché de consultas puede resultar poco adecuada en configuraciones modernas de MySQL/MariaDB. |
+| table_open_cache | 2000 | Permite mantener abiertas bastantes tablas y evitar aperturas repetidas durante las consultas analíticas. |
+| tmp_table_size | 256M | Las consultas de agregación y análisis pueden necesitar tablas temporales relativamente grandes. Aumentar este límite permite que determinadas operaciones temporales dispongan de más memoria. |
+| max_heap_table_size | 256M | Lo configuramos de forma coherente con tmp_table_size, proporcionando un límite similar para tablas temporales en memoria. |
+| innodb_flush_log_at_trx_commit | 1 | Aunque las escrituras sean periódicas, sigue siendo importante mantener la durabilidad e integridad de los datos almacenados. |
+log_bin
+ON
+Permite registrar los cambios realizados en la base de datos. Puede ser útil para recuperación y para mantener un registro de las operaciones de escritura.
+slow_query_log
+ON
+Es especialmente interesante en este caso porque las consultas son complejas y pesadas. Permite identificar cuáles están tardando demasiado.
+slow_query_log_file
+mysql-slow.log
+Archivo donde se almacenarán las consultas que superen el tiempo establecido.
+long_query_time
+5 segundos
+Como las consultas de análisis pueden ser complejas y trabajar con grandes cantidades de datos, no tendría sentido considerar automáticamente lenta una consulta que tarde 1 segundo. Un umbral de 5 segundos permite centrarse en las consultas especialmente lentas.
+bind-address
+0.0.0.0*
+Permitiría conexiones desde diferentes interfaces de red. Para una instalación real debería restringirse a las redes o equipos que necesiten acceder al servidor.
+innodb_file_per_table
+ON
+Permite mantener los datos de cada tabla InnoDB en su propio espacio de tablas, facilitando la gestión de un sistema con grandes cantidades de datos.
+performance_schema
+ON
+Es útil para analizar el rendimiento del servidor y detectar qué operaciones o consultas están consumiendo más recursos.
 
 
 
