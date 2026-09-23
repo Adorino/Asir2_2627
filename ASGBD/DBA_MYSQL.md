@@ -39,28 +39,39 @@ SEGUNDA ENTREVISTA: Aquí la prioridad ya no es tener miles de usuarios haciendo
 | tmp_table_size | 256M | Las consultas de agregación y análisis pueden necesitar tablas temporales relativamente grandes. Aumentar este límite permite que determinadas operaciones temporales dispongan de más memoria. |
 | max_heap_table_size | 256M | Lo configuramos de forma coherente con tmp_table_size, proporcionando un límite similar para tablas temporales en memoria. |
 | innodb_flush_log_at_trx_commit | 1 | Aunque las escrituras sean periódicas, sigue siendo importante mantener la durabilidad e integridad de los datos almacenados. |
-log_bin
-ON
-Permite registrar los cambios realizados en la base de datos. Puede ser útil para recuperación y para mantener un registro de las operaciones de escritura.
-slow_query_log
-ON
-Es especialmente interesante en este caso porque las consultas son complejas y pesadas. Permite identificar cuáles están tardando demasiado.
-slow_query_log_file
-mysql-slow.log
-Archivo donde se almacenarán las consultas que superen el tiempo establecido.
-long_query_time
-5 segundos
-Como las consultas de análisis pueden ser complejas y trabajar con grandes cantidades de datos, no tendría sentido considerar automáticamente lenta una consulta que tarde 1 segundo. Un umbral de 5 segundos permite centrarse en las consultas especialmente lentas.
-bind-address
-0.0.0.0*
-Permitiría conexiones desde diferentes interfaces de red. Para una instalación real debería restringirse a las redes o equipos que necesiten acceder al servidor.
-innodb_file_per_table
-ON
-Permite mantener los datos de cada tabla InnoDB en su propio espacio de tablas, facilitando la gestión de un sistema con grandes cantidades de datos.
-performance_schema
-ON
-Es útil para analizar el rendimiento del servidor y detectar qué operaciones o consultas están consumiendo más recursos.
+| log_bin | ON | Permite registrar los cambios realizados en la base de datos. Puede ser útil para recuperación y para mantener un registro de las operaciones de escritura. |
+| slow_query_log | ON | Es especialmente interesante en este caso porque las consultas son complejas y pesadas. Permite identificar cuáles están tardando demasiado. |
+| slow_query_log_file | mysql-slow.log | Archivo donde se almacenarán las consultas que superen el tiempo establecido. |
+| long_query_time | 5 | Como las consultas de análisis pueden ser complejas y trabajar con grandes cantidades de datos, no tendría sentido considerar automáticamente lenta una consulta que tarde 1 segundo. Un umbral de 5 segundos permite centrarse en las consultas especialmente lentas. |
+| bind-address | 0.0.0.0* | Permitiría conexiones desde diferentes interfaces de red. Para una instalación real debería restringirse a las redes o equipos que necesiten acceder al servidor. |
+| innodb_file_per_table | ON | Permite mantener los datos de cada tabla InnoDB en su propio espacio de tablas, facilitando la gestión de un sistema con grandes cantidades de datos. |
+| performance_schema | ON | Es útil para analizar el rendimiento del servidor y detectar qué operaciones o consultas están consumiendo más recursos. |
 
+Este es el resultado en la tabla de SQL en myphpadmin.
+<img width="384" height="289" alt="image" src="https://github.com/user-attachments/assets/ed64d5d7-baa2-4f3d-9221-28b19e99f1bc" />
+
+TERCERA EMPRESA: una red social donde hay muchas personas conectadas al mismo tiempo, pero donde predominan las escrituras (publicaciones, comentarios, compartidos, modificaciones) frente a las lecturas. Además, aunque no necesita el nivel de concurrencia de un sistema financiero, sí necesita que los cambios realizados por un usuario sean visibles rápidamente para los demás.
+
+| Parámetro | valor | porqué |
+| :--- | :--- | :--- |
+| innodb_buffer_pool_size | 65 | Hay muchas operaciones y usuarios simultáneos. Mantener una cantidad importante de datos e índices en memoria ayuda a reducir accesos al disco y mejorar los tiempos de respuesta. |
+| innodb_log_file_size  | 512M | Hay muchas escrituras debido a publicaciones, comentarios y compartidos. Un log suficientemente grande permite gestionar una cantidad elevada de cambios. |
+| max_connections | 1000 | Hay muchas personas utilizando la red social simultáneamente. Aunque la concurrencia no sea tan extrema como en el sistema financiero de Alcomer, se necesita admitir un número elevado de conexiones. |
+| query_cache_size | 0 | Debido a la cantidad de modificaciones que se realizan, mantener resultados de consultas en caché puede provocar frecuentes invalidaciones y no resulta especialmente conveniente. |
+| table_open_cache | 2000 | Una red social puede realizar muchas operaciones sobre sus tablas simultáneamente. Mantener más tablas abiertas puede reducir operaciones repetitivas de apertura y cierre. |
+| tmp_table_size | 64M | Es suficiente para las operaciones temporales habituales sin dedicar una cantidad excesiva de memoria a cada conexión.
+| max_heap_table_size | 64M | Se mantiene igual que tmp_table_size para establecer un límite coherente para las tablas temporales en memoria. |
+| innodb_flush_log_at_trx_commit | 1 | Las publicaciones, comentarios y modificaciones deben conservarse correctamente. Además, Alfred indica que la consistencia de los datos es importante. |
+| log_bin | ON | Permite registrar los cambios realizados en la base de datos, lo que puede ser útil para recuperación y replicación. |
+| slow_query_log | ON | Permite identificar consultas que estén provocando tiempos de respuesta elevados en una aplicación con muchos usuarios concurrentes. |
+| slow_query_log_file | mysql-slow.log | Archivo en el que se almacenarán las consultas consideradas lentas. |
+| long_query_time | 2 | Se busca una respuesta relativamente rápida para los usuarios. Un umbral de 2 segundos permite detectar consultas que puedan estar afectando a la experiencia de uso. |
+| bind-address | 0.0.0.0* | Permite conexiones desde las interfaces de red disponibles. En un servidor real debería restringirse a las redes que realmente necesiten acceder. |
+| innodb_file_per_table | ON | Permite gestionar los datos de cada tabla InnoDB de forma independiente, algo conveniente para una aplicación con muchas tablas y operaciones. |
+| performance_schema | ON | Permite monitorizar el rendimiento del servidor y detectar problemas relacionados con la concurrencia y el consumo de recursos. |
+
+Este es el resultado en la tabla de SQL en myphpadmin.
+<img width="386" height="296" alt="image" src="https://github.com/user-attachments/assets/c0f3c433-7a4d-40ff-81ed-a2a1287476ef" />
 
 
 
