@@ -76,8 +76,10 @@ Aqui se encuentra el formulario que Hydra usará.
 <img width="852" height="425" alt="image" src="https://github.com/user-attachments/assets/31eaa549-ed38-4797-a863-f262c2932ab9" />
 
 Sabiendo los datos investigando en DVWA sabemos que el comando para hacer el ataque será "hydra -l objetivo -P diccionario.txt 10.0.2.15 http-get-form "/DVWA/vulnerabilities/brute/:username=^USER^&password=^PASS^&Login=Login:F=Username and/or password incorrect.""
+Ya que este comando hará que hydra vaya a tal dirección, entre al recuadro de usuario y contraseña y lo rellene usando el contenido de diccionario.txt y si recibe Username and/or password incorrect. tendrá que intentarlo hasta que deje de recibir ese mensaje.
+
 <img width="651" height="381" alt="image" src="https://github.com/user-attachments/assets/3b399d8d-3327-4c63-a89f-07de2a7c80a8" />
 
-se tratan de falsos positivos.
+Se tratan de falsos positivos. Para evitar los falsos positivos tuve que editar la parte en la que pregunta por el nombre y la contraseña.
 
 Para mitigar daños, se podria establecer un número máximo de intentos fallidos desde una misma cuenta, Incrementar el tiempo de espera después de cada intento fallido, Las contraseñas deben ser suficientemente largas y no utilizar información fácilmente predecible.
