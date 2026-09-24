@@ -1,6 +1,5 @@
 PRIMERA ENTREVISTA: Alcomer Boquerón Caliente, la configuración debe estar orientada a alta concurrencia, muchas lecturas/escrituras simultáneas, transacciones de compra e inventario y tiempos de respuesta bajos.
 
-
 | Parámetro | valor | porqué |
 | :--- | :--- | :--- |
 | innodb_buffer_pool_size | 65 | Al haber muchas consultas y operaciones simultáneas, interesa mantener en memoria la mayor cantidad posible de datos e índices de InnoDB para reducir accesos a disco. |
@@ -9,8 +8,8 @@ PRIMERA ENTREVISTA: Alcomer Boquerón Caliente, la configuración debe estar ori
 | query_cache_size | 0 | Para una aplicación con muchas escrituras y actualizaciones frecuentes del inventario, la caché de consultas resulta poco apropiada, ya que los cambios pueden invalidar frecuentemente las consultas almacenadas. |
 | table_open_cache | 2000 | Permite mantener abiertas muchas tablas y reducir la necesidad de abrirlas y cerrarlas repetidamente, algo útil con una carga elevada de usuarios concurrentes. |
 | tmp_table_size | 64M | Permite disponer de tablas temporales en memoria de mayor tamaño, ayudando a determinadas consultas que necesitan operaciones temporales. |
-| max_heap_table_size | 64M | Se establece de forma coherente con tmp_table_size, permitiendo que las tablas temporales internas que utilizan el motor MEMORY tengan un tamaño mayor. |
-| innodb_flush_log_at_trx_commit | 1 | Es especialmente importante para Alcomer porque las compras y las actualizaciones de inventario deben mantener la integridad de las transacciones. Con 1, el log se sincroniza en cada confirmación de transacción. |
+| max_heap_table_size | 64M | El valor de 64M permitirá que las tablas temporales internas que utilizan el motor MEMORY tengan un tamaño mayor. |
+| innodb_flush_log_at_trx_commit | 1 | Las compras y las actualizaciones de inventario deben mantener la integridad de las transacciones. Con 1, el log se sincroniza en cada confirmación de transacción. |
 | log_bin | ON | Activa el registro binario de las operaciones que modifican los datos. Es útil para recuperación y replicación y aporta un registro de los cambios realizados. |
 | slow_query_log | ON | Como la empresa necesita tiempos de respuesta bajos, conviene registrar las consultas que tardan demasiado para poder detectar y optimizar los problemas de rendimiento. |
 | slow_query_log_file | mysql-slow.log | Archivo destinado a almacenar las consultas que superen el tiempo establecido como consulta lenta. |
@@ -31,9 +30,9 @@ SEGUNDA ENTREVISTA: Aquí la prioridad ya no es tener miles de usuarios haciendo
 
 | Parámetro | valor | porqué |
 | :--- | :--- | :--- |
-| innodb_buffer_pool_size | 70 | Se manejan grandes volúmenes de datos y muchas consultas de lectura. Tener una gran parte de los datos e índices en memoria puede reducir los accesos a disco. |
+| innodb_buffer_pool_size | 70 | Se sabe que se manejan grandes volumenes de datos y muchas consultas de lectura, sabiendo eso habrá que tener una gran parte de estos en la memoria, por eso el valor dado es del 70% de la memoria. |
 | innodb_log_file_size | 512M | Hay grandes cantidades de datos, pero las operaciones de escritura son periódicas y no constituyen la carga principal. Un tamaño relativamente grande permite gestionar las escrituras sin que el log se quede pequeño rápidamente. |
-| max_connections | 150 | No necesita miles de usuarios simultáneos como Alcomer. Las consultas son pesadas, por lo que interesa evitar un número excesivo de consultas complejas ejecutándose al mismo tiempo y consumiendo todos los recursos. |
+| max_connections | 150 | Las consultas son pesadas, por lo que interesa evitar un número excesivo de consultas complejas ejecutándose al mismo tiempo y consumiendo todos los recursos. |
 | query_cache_size | 0 | Las consultas son complejas y trabajan con grandes volúmenes de datos. Además, la caché de consultas puede resultar poco adecuada en configuraciones modernas de MySQL/MariaDB. |
 | table_open_cache | 2000 | Permite mantener abiertas bastantes tablas y evitar aperturas repetidas durante las consultas analíticas. |
 | tmp_table_size | 256M | Las consultas de agregación y análisis pueden necesitar tablas temporales relativamente grandes. Aumentar este límite permite que determinadas operaciones temporales dispongan de más memoria. |
@@ -41,7 +40,7 @@ SEGUNDA ENTREVISTA: Aquí la prioridad ya no es tener miles de usuarios haciendo
 | innodb_flush_log_at_trx_commit | 1 | Aunque las escrituras sean periódicas, sigue siendo importante mantener la durabilidad e integridad de los datos almacenados. |
 | log_bin | ON | Permite registrar los cambios realizados en la base de datos. Puede ser útil para recuperación y para mantener un registro de las operaciones de escritura. |
 | slow_query_log | ON | Es especialmente interesante en este caso porque las consultas son complejas y pesadas. Permite identificar cuáles están tardando demasiado. |
-| slow_query_log_file | mysql-slow.log | Archivo donde se almacenarán las consultas que superen el tiempo establecido. |
+| slow_query_log_file | mysql-slow.log | Archivo donde se almacenarán las consultas que superen el tiempo establecido. El valor que hemos puesto indica que en este archivo será donde se almacenaran las consultas. |
 | long_query_time | 5 | Como las consultas de análisis pueden ser complejas y trabajar con grandes cantidades de datos, no tendría sentido considerar automáticamente lenta una consulta que tarde 1 segundo. Un umbral de 5 segundos permite centrarse en las consultas especialmente lentas. |
 | bind-address | 0.0.0.0* | Permitiría conexiones desde diferentes interfaces de red. Para una instalación real debería restringirse a las redes o equipos que necesiten acceder al servidor. |
 | innodb_file_per_table | ON | Permite mantener los datos de cada tabla InnoDB en su propio espacio de tablas, facilitando la gestión de un sistema con grandes cantidades de datos. |
@@ -62,7 +61,7 @@ TERCERA EMPRESA: una red social donde hay muchas personas conectadas al mismo ti
 | table_open_cache | 2000 | Una red social puede realizar muchas operaciones sobre sus tablas simultáneamente. Mantener más tablas abiertas puede reducir operaciones repetitivas de apertura y cierre. |
 | tmp_table_size | 64M | Es suficiente para las operaciones temporales habituales sin dedicar una cantidad excesiva de memoria a cada conexión. |-
 | max_heap_table_size | 64M | Se mantiene igual que tmp_table_size para establecer un límite coherente para las tablas temporales en memoria. |
-| innodb_flush_log_at_trx_commit | 1 | Las publicaciones, comentarios y modificaciones deben conservarse correctamente. |
+| innodb_flush_log_at_trx_commit | 1 | Las publicaciones, comentarios y modificaciones deben conservarse correctamente. Por ello el valor dado es de uno. |
 | log_bin | ON | Permite registrar los cambios realizados en la base de datos, lo que puede ser útil para recuperación y replicación. |
 | slow_query_log | ON | Permite identificar consultas que estén provocando tiempos de respuesta elevados en una aplicación con muchos usuarios concurrentes. |
 | slow_query_log_file | mysql-slow.log | Archivo en el que se almacenarán las consultas consideradas lentas. |
