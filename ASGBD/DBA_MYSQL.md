@@ -60,9 +60,9 @@ TERCERA EMPRESA: una red social donde hay muchas personas conectadas al mismo ti
 | max_connections | 1000 | Hay muchas personas utilizando la red social simultáneamente. Aunque la concurrencia no sea tan extrema como en el sistema financiero de Alcomer, se necesita admitir un número elevado de conexiones. |
 | query_cache_size | 0 | Debido a la cantidad de modificaciones que se realizan, mantener resultados de consultas en caché puede provocar frecuentes invalidaciones y no resulta especialmente conveniente. |
 | table_open_cache | 2000 | Una red social puede realizar muchas operaciones sobre sus tablas simultáneamente. Mantener más tablas abiertas puede reducir operaciones repetitivas de apertura y cierre. |
-| tmp_table_size | 64M | Es suficiente para las operaciones temporales habituales sin dedicar una cantidad excesiva de memoria a cada conexión.
+| tmp_table_size | 64M | Es suficiente para las operaciones temporales habituales sin dedicar una cantidad excesiva de memoria a cada conexión. |-
 | max_heap_table_size | 64M | Se mantiene igual que tmp_table_size para establecer un límite coherente para las tablas temporales en memoria. |
-| innodb_flush_log_at_trx_commit | 1 | Las publicaciones, comentarios y modificaciones deben conservarse correctamente. Además, Alfred indica que la consistencia de los datos es importante. |
+| innodb_flush_log_at_trx_commit | 1 | Las publicaciones, comentarios y modificaciones deben conservarse correctamente. |
 | log_bin | ON | Permite registrar los cambios realizados en la base de datos, lo que puede ser útil para recuperación y replicación. |
 | slow_query_log | ON | Permite identificar consultas que estén provocando tiempos de respuesta elevados en una aplicación con muchos usuarios concurrentes. |
 | slow_query_log_file | mysql-slow.log | Archivo en el que se almacenarán las consultas consideradas lentas. |
