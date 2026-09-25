@@ -81,5 +81,17 @@ Ya que este comando hará que hydra vaya a tal dirección, entre al recuadro de 
 <img width="651" height="381" alt="image" src="https://github.com/user-attachments/assets/3b399d8d-3327-4c63-a89f-07de2a7c80a8" />
 
 Se tratan de falsos positivos. Para evitar los falsos positivos tuve que editar la parte en la que pregunta por el nombre y la contraseña.
+hydra -c 5 -l objetivo -P diccionario.txt 10.0.2.15 http-get-form '/DVWA/vulnerabilities/brute/:username=^USER^&password=^PASS^&Login=Login:F=incorrect:H=Cookie\: PHPSESSID=TU_COOKIE_AQUÍ; security=low'
+
+Para saber las cookies para ponerlo en la linea de comando, tuve que entrar a DVWA, pulsar F12, ir a la pestaña de almacenamiento, ir al menu de la izquierda, desplegar la seccion de cookies y hacer clic en la ip de 127.0.2.15. Alli se verán dos valores.
+<img width="1365" height="648" alt="image" src="https://github.com/user-attachments/assets/1dce6d7f-4f7b-45ae-902f-f32cee1ce1ef" />
+
+El comando será hydra -c 5 -l objetivo -P diccionario.txt 10.0.2.15 http-get-form "/DVWA/vulnerabilities/brute/:username=^USER^&password=^PASS^&Login=Login:F=incorrect"
+
+Después de varios errores tuve que usar este comando. Hydra las leerá automáticamente en segundo plano cada vez que realice una petición web, lo que nos permite borrarlas por completo del comando principal. Esto soluciona de raíz el molesto error del parámetro F porque elimina los dos puntos (:) conflictivos que volvían loco al programa.
+<img width="625" height="78" alt="image" src="https://github.com/user-attachments/assets/2c70dfe9-1c65-4c3b-976b-1d5b0080380b" />
+
+<img width="619" height="314" alt="image" src="https://github.com/user-attachments/assets/94d96da8-3384-4d95-9643-4a1f345cb6af" />
+
 
 Para mitigar daños, se podria establecer un número máximo de intentos fallidos desde una misma cuenta, Incrementar el tiempo de espera después de cada intento fallido, Las contraseñas deben ser suficientemente largas y no utilizar información fácilmente predecible.
