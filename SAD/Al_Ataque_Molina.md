@@ -1,5 +1,5 @@
-### Al ataque
-# Aqui se verá el desarrollo de la practica de Pydictor.
+### $\color{cyan}{\text{Al ataque}}$.
+# $\color{red}{\text{Aqui se verá el desarrollo de la practica de Pydictor.}}$
 Tendremos que instalar python en su ultima version antes. (sudo apt install python3).
 Para esta practica vamos a simular un ataque, para ello vamos a usar la herramienta de Pydictor, que permite la creación para fuerza bruta.
 <img width="656" height="280" alt="Captura de pantalla 2026-09-18 121131" src="https://github.com/user-attachments/assets/a3d8a8aa-7e6b-4778-b5da-22af30c7cbd9" />
@@ -15,7 +15,7 @@ Ahora para instalar la segunda herramienta llamada Dymerge se usará el comando 
 Después ejecutaremos la herramienta para comprobar su funcionamiento con el comando de "python dymerge.py -h".
 <img width="627" height="402" alt="Captura de pantalla 2026-09-18 121714" src="https://github.com/user-attachments/assets/8412670d-caea-46eb-baa6-35827b71af88" />
 
-# Segunda parte de la practica
+# $\color{red}{\text{Segunda parte de la practica}}$
 Habrá que instalar OpenSSH, y después iniciar y configurar el servidor. Para instalarlo primero actualizaremos los repositorios con "sudo apt update" y después usaremos el comando de "sudo apt install openssh-server openssh-client -y" para instalar esta herramienta.
 <img width="662" height="533" alt="Captura de pantalla 2026-09-18 122321" src="https://github.com/user-attachments/assets/9911571d-345f-41f1-be8d-22eb927952d8" />
 Primero, para iniciar el servicio usaremos el comando de "sudo systemctl start ssh", para habilitar el servicio usaremos el comando de "sudo systemctl enable ssh" y para comprobar si está activo usaremos el comando de "sudo systemctl status ssh".
@@ -45,7 +45,7 @@ PubkeyAuthentication yes
 
 Tambien se podria usar la herramienta de fail2ban que si detecta varios intentos de sesión que comparte IP, bloqueará el intento de inicio de sesión.
 
-# Utilizar diccionarion con Hydra para simular un ataque de fuerza bruta con HTTP (formulario web)
+# $\color{red}{\text{Utilizar diccionarion con Hydra para simular un ataque de fuerza bruta con HTTP (formulario web)}}$
 
 Para este apartado tendremos que instalar y configurar la herramienta de DVWA desde github con el comando, primero accediendo al directorio web.
 También tendremos que comprobar que tenemos apache habilitado.
