@@ -14,21 +14,21 @@
     ?>
     
     <table border="ipx">
-    <?php if (rand(1, 200) == 15) echo "BINGO"?>
+    <?php if ($numero1 == 15) echo "BINGO"; ?>
         <tr>
-            <td><?php  echo rand(0,100) ?><?php if (rand(1, 200) == 15) echo "BINGO"?></td>
+            <td><?php  echo $numero1  ?></td>
             <td><?php  echo $letra1 ?></td>
-            <td><?php  echo rand(0,100) ?></td>
+            <td><?php  echo $numero1  ?></td>
         </tr>
         <tr>
-            <td><?php  echo rand(0,100) ?></td>
+            <td><?php  echo $numero1 ?></td>
             <td><?php  echo $numero1?></td>
-            <td><?php  echo rand(0,100) ?></td>
+            <td><?php  echo $numero1 ?></td>
         </tr>
         <tr>
-            <td><?php  echo rand(0,100) ?></td>
+            <td><?php  echo $numero1 ?></td>
             <td><?php  echo $numero2 ?></td>
-            <td><?php  echo rand(0,100) ?></td>
+            <td><?php  echo $numero1 ?></td>
         </tr>
     </table>
 
