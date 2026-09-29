@@ -6,24 +6,32 @@
     <title>Document</title>
 </head>
 <body>
-    <table>
+
+<h1>Adrian M es un tio de <?php  echo rand(0,10) ?></h1>
+   <?php $numero1 = rand(1,200);
+    $letra1 = "MOCO";
+    $numero2 = 666;
+    ?>
+    
+    <table border="ipx">
+    <?php if (rand(1, 200) == 15) echo "BINGO"?>
         <tr>
-            <td><?php  echo rand(0,100) ?></td>
-            <td><?php  echo rand(0,100) ?></td>
+            <td><?php  echo rand(0,100) ?><?php if (rand(1, 200) == 15) echo "BINGO"?></td>
+            <td><?php  echo $letra1 ?></td>
             <td><?php  echo rand(0,100) ?></td>
         </tr>
         <tr>
             <td><?php  echo rand(0,100) ?></td>
-            <td><?php  echo rand(0,100) ?></td>
+            <td><?php  echo $numero1?></td>
             <td><?php  echo rand(0,100) ?></td>
         </tr>
         <tr>
             <td><?php  echo rand(0,100) ?></td>
-            <td><?php  echo rand(0,100) ?></td>
+            <td><?php  echo $numero2 ?></td>
             <td><?php  echo rand(0,100) ?></td>
         </tr>
     </table>
-    <table></table>
-    <h1>Adrian M es un tio de <?php  echo rand(0,10) ?></h1>
+
+    
 </body>
 </html>
