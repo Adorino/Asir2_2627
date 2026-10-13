@@ -27,3 +27,14 @@ No tendrá permiso de acceso, como se puede ver en la imagen.
 
 ¿Qué sucede si tronko2 intenta modificar un archivo dentro del directorio?
 El tampoco tiene permisos de modificacion, como se puede ver en la imagen.
+
+Ejercicio 2: Control de Acceso con el Bit SGID en Directorios
+Escenario: el equipo de desarrollo necesita colaborar en un subdirectorio dentro de di_recto. Queremos asegurarnos de que cualquier archivo creado en ese subdirectorio tenga automáticamente el mismo grupo propietario (devEria2), para facilitar la colaboración.
+
+Paso 1: Crear un subdirectorio para colaboración. Crea un subdirectorio llamado di_afano dentro de /di_recto. Cambia el grupo propietario del subdirectorio a devEria2.
+Paso 2: Aplicar el bit SGID. Aplica el bit SGID al subdirectorio di_afano, para que todos los archivos creados en él hereden el grupo propietario. Verifica y muestra los permisos del subdirectorio.
+Paso 3: Crear archivos de prueba. Cambia a tronko2 y crea un archivo llamado archivo_tronko2.txt dentro del subdirectorio di_afano. Verifica y muestra los permisos y el grupo propietario del archivo.
+Preguntas:
+
+¿Cuál es el grupo propietario del archivo creado por tronko2?
+¿Qué ventaja aporta el bit SGID en un entorno de colaboración?
