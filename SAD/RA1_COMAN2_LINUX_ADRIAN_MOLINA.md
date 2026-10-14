@@ -1,9 +1,10 @@
 FASE 1: Permisos de Archivos en Linux
 
-#Ejercicio 1: Gestión de Permisos en un Entorno de Trabajo Multiusuario
+## Ejercicio 1: Gestión de Permisos en un Entorno de Trabajo Multiusuario
+
 Escenario: imagina que eres el administrador de un equipo de desarrollo con varios usuarios, y necesitas configurar los permisos de un proyecto compartido entre tres usuarios: monon1, tronko2 y birmingan3. Cada uno debe tener permisos específicos para un directorio de proyecto, de acuerdo con su rol.
 
-#Paso 1: Crear un entorno simulado de usuarios y grupos. Crea los tres usuarios y un grupo común llamado devEria2. Crea un directorio llamado di_recto para el proyecto y cambia el grupo propietario a devEria2.
+## Paso 1: Crear un entorno simulado de usuarios y grupos. Crea los tres usuarios y un grupo común llamado devEria2. Crea un directorio llamado di_recto para el proyecto y cambia el grupo propietario a devEria2.
 Aqui se pueden ver los comandos usados para crear los tres usuarios. 
 
 <img width="448" height="207" alt="image" src="https://github.com/user-attachments/assets/2df7c159-9042-4c69-96d3-9f9bc8d73a3c" />
@@ -16,27 +17,29 @@ Ahora creé el directorio y cambié el propietario de dicho directorio usando el
 
 <img width="348" height="103" alt="image" src="https://github.com/user-attachments/assets/3da25212-9aa1-455b-9cc3-5a8853ea2e7b" />
 
-#Paso 2: Configuración de permisos básicos. Configura los permisos para que solo los usuarios del grupo devEria2 puedan escribir en el directorio. Verifica mostrando los permisos del directorio.
+## Paso 2: Configuración de permisos básicos. Configura los permisos para que solo los usuarios del grupo devEria2 puedan escribir en el directorio. Verifica mostrando los permisos del directorio.
 Aqui se puede ver como configureré los permisos basicos, dandole permisos a los integrantes del grupo de devEria2 y sin darle permisos a otro, por eso 770.
 
 <img width="531" height="110" alt="image" src="https://github.com/user-attachments/assets/37ea4efe-2213-4ea9-af5b-ae182471a446" />
 
-#Paso 3: Configuración de permisos avanzados. monon1 debe tener permisos completos (lectura, escritura, ejecución) en todo el proyecto: cambia el propietario del directorio a monon1. Los otros dos usuarios del grupo solo deben poder leer y ejecutar archivos, pero no modificarlos: cambia los permisos de modo que el grupo devEria2 solo tenga permisos de lectura y ejecución.
+## Paso 3: Configuración de permisos avanzados. monon1 debe tener permisos completos (lectura, escritura, ejecución) en todo el proyecto: 
+
+cambia el propietario del directorio a monon1. Los otros dos usuarios del grupo solo deben poder leer y ejecutar archivos, pero no modificarlos: cambia los permisos de modo que el grupo devEria2 solo tenga permisos de lectura y ejecución.
 SE cambiará el propietario dle directorio a monon1 usando el comando de chwon, Se cambiarán los pemrisos, haciendo que el propietario tenga todos los permisos, y los permisos del grupo sea de lectura y ejecución, un 5.
 
 <img width="506" height="161" alt="image" src="https://github.com/user-attachments/assets/020e2d80-22f4-43d5-8476-04f57e947e94" />
 
 Preguntas:
 
-¿Qué sucede si un usuario fuera del grupo devEria2 intenta acceder al directorio?
+### ¿Qué sucede si un usuario fuera del grupo devEria2 intenta acceder al directorio?
 No tendrá permiso de acceso, como se puede ver en la imagen.
 
 <img width="347" height="64" alt="image" src="https://github.com/user-attachments/assets/ff6cb650-f9da-4d8e-bb53-bb551139c121" />
 
-¿Qué sucede si tronko2 intenta modificar un archivo dentro del directorio?
+### ¿Qué sucede si tronko2 intenta modificar un archivo dentro del directorio?
 El tampoco tiene permisos de modificacion, como se puede ver en la imagen.
 
-Ejercicio 2: Control de Acceso con el Bit SGID en Directorios
+## Ejercicio 2: Control de Acceso con el Bit SGID en Directorios
 Escenario: el equipo de desarrollo necesita colaborar en un subdirectorio dentro de di_recto. Queremos asegurarnos de que cualquier archivo creado en ese subdirectorio tenga automáticamente el mismo grupo propietario (devEria2), para facilitar la colaboración.
 
 Paso 1: Crear un subdirectorio para colaboración. Crea un subdirectorio llamado di_afano dentro de /di_recto. Cambia el grupo propietario del subdirectorio a devEria2.
@@ -53,16 +56,19 @@ Paso 3: Crear archivos de prueba. Cambia a tronko2 y crea un archivo llamado arc
 
 Preguntas:
 
-¿Cuál es el grupo propietario del archivo creado por tronko2?
+### ¿Cuál es el grupo propietario del archivo creado por tronko2?
+
 El grupo propietario será devEria2, porque el directorio di_afano tiene activado el bit SGID.
 Normalmente, sin SGID, el archivo heredaría el grupo principal efectivo del usuario que lo crea, según la configuración del sistema. Con SGID en el directorio, hereda el grupo propietario de ese directorio.
-¿Qué ventaja aporta el bit SGID en un entorno de colaboración?
+
+### ¿Qué ventaja aporta el bit SGID en un entorno de colaboración?
+
 Unifica el grupo propietario: los archivos nuevos heredan el grupo del directorio.
 Facilita el trabajo en equipo: los miembros del grupo pueden acceder a los archivos según los permisos asignados.
 Reduce errores administrativos: no es necesario cambiar manualmente el grupo de cada archivo.
 Mejora la organización: el contenido del proyecto mantiene una propiedad de grupo coherente.
 
-Ejercicio 3: Gestión de Archivos Temporales con Sticky Bit
+## Ejercicio 3: Gestión de Archivos Temporales con Sticky Bit
 Escenario: se ha creado un directorio temporal compartido entre todos los usuarios del sistema. Necesitas asegurarte de que los usuarios puedan crear y modificar sus propios archivos, pero no puedan eliminar o modificar los archivos de otros usuarios.
 
 Paso 1: Crear un directorio temporal. Crea un directorio llamado tmp_rano en /tmp. Cambia los permisos para que todos los usuarios puedan leer, escribir y ejecutar en el directorio.
@@ -79,16 +85,19 @@ Paso 3: Crear archivos de prueba. Cambia a monon1 y crea un archivo en el direct
 
 Preguntas:
 
-¿Pudo birmingan3 eliminar el archivo de monon1? ¿Por qué?
+### ¿Pudo birmingan3 eliminar el archivo de monon1? ¿Por qué?
+
 No. Como el directorio tiene activado el sticky bit (t), un usuario normal no puede eliminar ni renombrar archivos pertenecientes a otros usuarios, aunque el directorio tenga permisos 777.
 Las excepciones principales son el propietario del archivo, el propietario del directorio y los procesos con privilegios adecuados.
-¿Cómo ayuda el sticky bit a mejorar la seguridad en directorios compartidos?
+
+### ¿Cómo ayuda el sticky bit a mejorar la seguridad en directorios compartidos?
+
 Protege los archivos ajenos: evita que cualquier usuario elimine o renombre archivos de otros usuarios.
 Permite la colaboración: todos pueden crear archivos en el directorio compartido.
 Reduce eliminaciones accidentales o malintencionadas: cada usuario conserva el control de sus propios archivos.
 Facilita la gestión de espacios temporales: es el mecanismo utilizado tradicionalmente en directorios como /tmp.
 
-Ejercicio 4: Configuración de umask y Creación de Archivos Nuevos
+## Ejercicio 4: Configuración de umask y Creación de Archivos Nuevos
 Escenario: quieres configurar el entorno de trabajo para que todos los archivos nuevos creados por los usuarios tengan permisos predeterminados restrictivos (sólo lectura y escritura para el propietario, sin acceso para el grupo y otros).
 
 Paso 1: Configurar umask. Verifica el valor actual de umask. Cambia el valor de umask a 077 para que los archivos creados sean accesibles solo por el propietario.
@@ -104,7 +113,8 @@ Paso 3: Restablecer umask. Si deseas restaurar el valor predeterminado de umask,
 
 Preguntas:
 
-¿Cómo afectó el valor de umask a los permisos de los nuevos archivos?
+### ¿Cómo afectó el valor de umask a los permisos de los nuevos archivos?
+
 Al establecer umask 077, los archivos nuevos creados normalmente con permisos iniciales 666 quedan con permisos 600 (rw-------).
 Esto significa que:
 - El propietario puede leer y escribir.
@@ -112,14 +122,15 @@ Esto significa que:
 - Los demás usuarios tampoco tienen acceso por los permisos tradicionales.
 Los directorios nuevos normalmente quedan con permisos 700, por lo que solo su propietario puede listarlos y acceder a ellos.
 
-¿Cómo podrías usar umask para mejorar la seguridad de los archivos en un sistema multiusuario?
+### ¿Cómo podrías usar umask para mejorar la seguridad de los archivos en un sistema multiusuario?
+
 Puedes aplicar máscaras restrictivas para evitar que los archivos nuevos sean accesibles por otros usuarios de forma predeterminada.
 - umask 077: para archivos privados, como documentos de trabajo o configuraciones personales.
 - umask 027: para permitir lectura al grupo, pero denegar el acceso a los demás usuarios.
 - umask 022: para permitir lectura a otros usuarios, pero no escritura por los permisos habituales.
 En un entorno multiusuario, umask 077 es especialmente útil para información confidencial, ya que reduce el riesgo de exposición accidental.
 
-Ejercicio 5: Implementación de ACLs
+## Ejercicio 5: Implementación de ACLs
 Queremos que birmingan3 pueda leer un archivo específico dentro de un nuevo directorio que se tiene que crear llamado archivos_criticos, pero sin poder modificarlo.
 
 <img width="442" height="129" alt="image" src="https://github.com/user-attachments/assets/174b5ff4-7ca7-4b67-a840-a4a0874d24d6" />
@@ -132,7 +143,7 @@ Queremos que birmingan3 pueda leer un archivo específico dentro de un nuevo dir
 
 Habilita ACLs en el sistema si no están habilitadas (si ya lo están, omite este paso).
 
-FASE 2: Reto de Búsquedas Avanzadas
+## FASE 2: Reto de Búsquedas Avanzadas
 Objetivo: uso efectivo de los comandos de búsqueda (grep, find, locate) y sus opciones para localizar información específica, archivos y directorios dentro del sistema de ficheros.
 
 Setup Inicial a realizar (se asume que se está en tu directorio personal):
@@ -176,7 +187,7 @@ Ejercicios de Búsqueda
 
 <img width="438" height="137" alt="image" src="https://github.com/user-attachments/assets/bf3ff8be-3eb3-46bf-ab4b-aeb8e5b53ca2" />
 
-I. Ejercicios con grep (Búsqueda de Contenido)
+## I. Ejercicios con grep (Búsqueda de Contenido)
 
 Busca Errores Críticos: muestra todas las líneas que contengan la palabra [CRIT] dentro del archivo Documentos/Logs/log_error.2024.
 
@@ -194,7 +205,7 @@ Líneas sin Comentarios: muestra todas las líneas del archivo Proyectos/app/mai
 
 <img width="635" height="101" alt="image" src="https://github.com/user-attachments/assets/a493c8b5-088c-4094-ba67-2cfd7a6dc2ac" />
 
-II. Ejercicios con find (Búsqueda de Archivos por Propiedad)
+## II. Ejercicios con find (Búsqueda de Archivos por Propiedad)
 
 Archivos de Configuración: busca todos los archivos que terminen con la extensión .ini en todo el directorio de la práctica.
 
@@ -212,7 +223,7 @@ Archivos Modificados Recientemente: busca todos los archivos (-type f) que hayan
 
 <img width="462" height="314" alt="image" src="https://github.com/user-attachments/assets/60986153-046c-40c7-91a2-29288a9139b1" />
 
-III. Ejercicios con locate (Búsqueda Rápida en Base de Datos)
+## III. Ejercicios con locate (Búsqueda Rápida en Base de Datos)
 
 Nota: si el comando no encuentra los archivos recién creados, se debe ejecutar sudo updatedb primero si tiene permisos.
 
