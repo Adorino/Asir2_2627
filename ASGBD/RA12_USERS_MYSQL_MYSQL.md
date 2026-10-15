@@ -72,6 +72,10 @@ Crea el usuario Crispula con contraseña "rosita" para que pueda acceder desde e
 
 <img width="626" height="266" alt="image" src="https://github.com/user-attachments/assets/71b8c867-029e-4648-9012-a445414901ac" />
 
+Para escuchar todas las interfaces de red, tengo que cambiar este parámetro, estaba en 127.0.0.1 a 0.0.0.0, lo que hará que escuche todos.
+<img width="634" height="363" alt="image" src="https://github.com/user-attachments/assets/c72ec0f2-3273-4318-a887-7e340d6b4a25" />
+
+
 Conéctate con el usuario Crispula.
 
 <img width="602" height="478" alt="image" src="https://github.com/user-attachments/assets/19794e31-615c-45ab-bef2-c576d74d8cf5" />
