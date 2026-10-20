@@ -1,0 +1,115 @@
+/* esto servirá para que sea bonito bonito */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f9;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+}
+.container {
+    background: white;
+    border: 2px solid #333;
+    border-radius: 8px;
+    padding: 25px;
+    width: 300px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+/* esto crea la linea que está debajo del titulo de DADOS */
+h2 {
+    text-align: center;
+    margin-top: 0;
+    border-bottom: 2px solid #333;
+    padding-bottom: 10px;
+}
+.form-group {
+    margin-bottom: 18px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* los valores number de select e input tendrán este estilo */
+select, input[type="number"] {
+    width: 80px;
+    padding: 5px;
+    text-align: center;
+}
+.btn-container {
+    text-align: center;
+    margin-top: 20px;
+}
+button {
+    padding: 8px 20px;
+    font-weight: bold;      /* estilo de boton */
+    cursor: pointer;
+}
+.dados-container {
+    display: flex;
+    justify-content: center;    /* estilo del contenedor que contiene los dados */
+    gap: 15px;
+    margin: 20px 0;
+}
+.resultado-puntos {
+    display: flex;
+    justify-content: space-between;     /* estilo de los puntos del resultado */
+    margin: 20px 0;
+    font-weight: bold;
+}
+.puntos-box {
+    width: 60px;
+    border: 1px solid #777;     /* estilo de la caja de puntos */
+    text-align: center;
+}
+.final-status {
+    font-size: 28px;
+    font-weight: bold;
+    text-align: center;
+}
+.pierdes { color: #d9534f; }
+.ganas { color: #5cb85c; }
+.back-link {
+    display: block;
+    text-align: center;
+    margin-top: 20px;
+    text-decoration: none;
+}
+
+/* --- ESTILOS VISUALES DE LAS FIGURAS GEOMÉTRICAS --- */
+.dado-base {
+    width: 60px;
+    height: 60px;
+    background-color: #333;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+}
+.dado-base span {
+    color: white;
+    font-weight: bold;
+    font-size: 16px;
+}
+.triangulo {
+    clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
+}
+.triangulo span {
+    padding-top: 15px;
+}
+.cuadrado {
+    clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%);
+}
+.octaedro {
+    clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
+}
+.decagono {
+    clip-path: polygon(50% 0%, 85% 25%, 100% 60%, 75% 95%, 50% 100%, 25% 95%, 0% 60%, 15% 25%);
+}
+.dodecaedro {
+    clip-path: polygon(50% 0%, 100% 38%, 82% 100%, 18% 100%, 0% 38%);
+}
+.icosaedro {
+    clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+}
+
