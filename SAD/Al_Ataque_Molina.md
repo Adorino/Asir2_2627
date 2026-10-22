@@ -36,6 +36,7 @@ Para crear un usuario se usará el comando de "sudo useradd -m objetivo" y para 
 <img width="411" height="148" alt="Captura de pantalla 2026-09-18 123546" src="https://github.com/user-attachments/assets/32faeddd-d0d2-4a85-b7d9-f47911dbf9b2" />
 
 Antes de conectarnos tendremos que saber la ip del servidor SSH, para eso vamos a usar el comando de ip a, lo que nos dió la ip de 10.0.2.15. Ahora para conectarnos tendremos que usar el comando de "ssh objetivo@[ip del servidro]" en mi caso será ssh objetivo 10.0.2.15.
+
 <img width="654" height="335" alt="Captura de pantalla 2026-09-18 123914" src="https://github.com/user-attachments/assets/d0a71dce-95a9-444c-a168-6f5aac1e2866" />
 
 Antes de comenzar a simular el ataque de fuerza bruta, creé el diccionario, con varias contraseñas aleatorias y con la real en ella. 
@@ -81,6 +82,7 @@ Tras esto tuve que comprobar que DVWA tengra las mismas credenciales en su archi
 <img width="648" height="508" alt="image" src="https://github.com/user-attachments/assets/5cf85718-3b4f-4dcf-a6c8-a0ae87411d7c" />
 
 tras esto pude iniciar DVWA en el buscador y bajar la seguridad.
+
 <img width="1317" height="659" alt="image" src="https://github.com/user-attachments/assets/34e82940-6aef-427e-b718-625e3bc4bb74" />
 
 En esta pagina tendremos que bajar abajo y hacer clic en el boton que dice Create / reset data base. Tras esto nos dirigiremos a la parte de abajo que apareció tras hacer clic en el boton anteriomente dicho, y haremos clic en setup.
