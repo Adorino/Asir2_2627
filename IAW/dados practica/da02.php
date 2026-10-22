@@ -101,7 +101,7 @@ if ($puntos_obtenidos <= $puntos_oponente) {
         <?php echo $mensaje; ?>
     </div>
 
-    <a href="da01.php" class="back-link">← Volver a jugar?</a>
+    <a href="da01.php" class="back-link">← ¿Volver a jugar?</a>
 </div>
 
 </body>
