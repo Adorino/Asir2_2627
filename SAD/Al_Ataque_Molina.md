@@ -8,7 +8,7 @@ Para esta practica vamos a simular un ataque, para ello vamos a usar la herramie
 En esta imagen se puede ver como instalé la herramienta de Pydictor usando los siguiente comandos en la terminal, en estos comandos cloné el repositorio oficial y después entré en la carpeta del programa.
 
 Para comprobar su funcionamiento usaremos el comando de python3 pydictor.py y como se puede ver en la imagen, el comando mostró la siguiente respuesta.
-"
+
 <img width="661" height="526" alt="Captura de pantalla 2026-09-18 121317" src="https://github.com/user-attachments/assets/2efac216-05a3-4d5e-846b-bc6329fd042e" />
 
 Ahora para instalar la segunda herramienta llamada Dymerge se usará el comando de "git clone https://github.com/k4m4/dymerge.git, después accedí al directorio que se creó igual que con Pydictor.
@@ -28,6 +28,7 @@ Primero, para iniciar el servicio usaremos el comando de "sudo systemctl start s
 <img width="653" height="574" alt="Captura de pantalla 2026-09-18 122807" src="https://github.com/user-attachments/assets/bdebd511-246d-4c01-9f5c-9ac55d33c1e8" />
 
 El archivo de configuración principal se encuentra en /etc/ssh/sshd_config. Antes de editarlo, es recomendable hacer una copia de seguridad:"sudo cp /etc/ssh/sshd_config /etc/ssh/sshd_config.bak" y después vamos a editarlo, configurandolo, usando el comando de "sudo nano /etc/ssh/sshd_config", he usado el comando cat para ver primero el contenido.
+
 <img width="656" height="558" alt="Captura de pantalla 2026-09-18 123138" src="https://github.com/user-attachments/assets/bddf01e5-c472-44fc-a8e3-ddbdbb709c2b" />
 
 Para crear un usuario se usará el comando de "sudo useradd -m objetivo" y para darle una contraseña usamos el comando de "sudo passwd objetivo".
