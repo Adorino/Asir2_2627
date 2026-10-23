@@ -365,6 +365,9 @@ Repite exactamente el mismo comando del paso 2:
 ```bash
 zcat /usr/share/doc/php$PHPV-common/changelog.Debian.gz | grep -E "CVE-2026-10961[89]"
 ```
+No salía con ese comando, por ello he usado un comando que busca de forma explicita y este devolvió lo siguiente. Esa línea confirma que el mantenedor del paquete de Debian/Kali aplicó los parches específicos para evitar la corrupción de estado (state corruption) que daba origen al exploit de ejecución remota de código.
+
+<img width="626" height="97" alt="image" src="https://github.com/user-attachments/assets/4fe1d5fe-95ad-4983-9f65-91533221a288" />
 
 Ahora sí deberían aparecer los dos CVE. Si no aparecen, tu repositorio todavía no ha publicado el parche: anótalo en el informe, mantén la mitigación y vuelve a intentarlo otro día.
 
@@ -382,6 +385,9 @@ Este paso es el que más se olvida en la vida real, y sin él todo lo anterior n
 sudo systemctl restart apache2
 sudo systemctl restart php$PHPV-fpm 2>/dev/null
 ```
+Aquí se puede ver que se reiniciaron los dos servicios ya que no hubo ningún error como respuesta.
+
+<img width="489" height="99" alt="image" src="https://github.com/user-attachments/assets/ceae374f-ad1a-4e11-ba60-a816d70f4afb" />
 
 > La segunda línea solo hace algo si tienes PHP-FPM. Si no lo tienes, `2>/dev/null` oculta el error.
 
@@ -390,6 +396,11 @@ sudo systemctl restart php$PHPV-fpm 2>/dev/null
 ```bash
 systemctl status apache2 --no-pager
 ```
+Apache se está ejecutando perfectamente (active (running)), El proceso principal (Main PID: 18956) está activo y listo para recibir peticiones (Idle/Busy workers 100/0).  (AH00558: apache2: Could not…age) indica que Apache no tiene configurado un nombre de dominio principal (ServerName) en sus archivos de configuración global y está usando la IP local o 127.0.0.1 por defecto.
+
+<img width="631" height="373" alt="image" src="https://github.com/user-attachments/assets/a407a0d2-4c27-4a95-895a-89992ee7a668" />
+
+El "preset" es solo un recordatorio de cómo venía el sistema originalmente.
 
 Debe aparecer **active (running)** en verde. Si aparece *failed*, revisa el error con `sudo journalctl -u apache2 -n 30` y, si no sabes resolverlo, restaura la copia `php.ini.bak` o vuelve a la instantánea.
 
@@ -400,14 +411,44 @@ grep -A3 "Start-Date" /var/log/apt/history.log | tail -n 8
 systemctl show apache2 -p ActiveEnterTimestamp
 ```
 
-> El primer comando muestra la fecha y hora de la última actualización de paquetes, sacada del registro de `apt`. El segundo muestra cuándo arrancó Apache por última vez. **La hora de arranque de Apache debe ser posterior a la de la actualización.** Si es anterior, Apache sigue usando el PHP viejo.
+<img width="628" height="366" alt="Captura de pantalla 2026-10-23 095513" src="https://github.com/user-attachments/assets/35bc5b50-0f4e-432b-bc08-d05c1dcb9bd2" />
+
+Aqui tienes la respuesta completa:
+
+Commandline: apt dist-upgrade -y
+Requested-By: molina (1000)
+Install: libperl5.42:amd64 (5.42.3-1, automatic), selinux-utils:amd64 (3.11-2.1, automatic), g++-16-x86-64-linux-gnu:amd64 (16.2.0-3, automatic), cups-filters:amd64 (1.28.17-7+b3, automatic), python3-flask-security:amd64 (5.9.1-1, automatic), python3-httpcore2:amd64 (2.12.0-2, automatic), g++-16:amd64 (16.2.0-3, automatic), gcc-16:amd64 (16.2.0-3, automatic), libtesseract5:amd64 (5.5.0-1.1, automatic), libgcc-16-dev:amd64 (16.2.0-3, automatic), libhdf5-320:amd64 (2.2.0+repack-5, automatic), libstdc++-16-dev:amd64 (16.2.0-3, automatic), libntfs-3g90:amd64 (1:2026.7.7-2, automatic), cups-common:amd64 (2.4.18-1, automatic), gcc-16-x86-64-linux-gnu:amd64 (16.2.0-3, automatic), libopenjph0.28:amd64 (0.28.1-1, automatic), libimath-3-2-30:amd64 (3.2.2-2+b1, automatic), libx265-216:amd64 (4.2-3, automatic), libcmark-gfm-extensions0.29.0.gfm.13:amd64 (0.29.0.gfm.13-7.1, automatic), libgeos3.15.0:amd64 (3.15.0-1, automatic), libbluray4:amd64 (1:1.5.0-3, automatic), fonts-font-awesome-legacy:amd64 (6-3, automatic), libpyside6-py3-6.11:amd64 (6.11.2-2, automatic), cups-client:amd64 (2.4.18-1, automatic), cups-ppdc:amd64 (2.4.18-1, automatic), ruby-sys-proctable:amd64 (1.3.0-1, automatic), python3-diskcache:amd64 (5.6.3-2, automatic), cups-daemon:amd64 (2.4.18-1, automatic), libproc2-1:amd64 (2:4.0.7-1, automatic), libcmark-gfm0.29.0.gfm.13:amd64 (0.29.0.gfm.13-7.1, automatic), libvidstab1.2:amd64 (1.1.1-4, automatic), libqpdf30:amd64 (12.4.2-1, automatic), libpoppler-cpp3:amd64 (26.07.0-2, automatic), libconfig++15:amd64 (1.8.2+ds-1, automatic), cups-filters-core-drivers:amd64 (1.28.17-7+b3, automatic), poppler-utils:amd64 (26.07.0-2, automatic), cups-ipp-utils:amd64 (2.4.18-1, automatic), libmupdf28.2:amd64 (1.28.2+ds1-2, automatic), linux-modules-7.1.5+kali-amd64:amd64 (7.1.5-1kali1, automatic), libcupsfilters1t64:amd64 (1.28.17-7+b3, automatic), ruby-websocket-extensions:amd64 (0.1.5-2, automatic), libswscale10:amd64 (7:9.0.2-1, automatic), linux-image-7.1.5+kali-amd64:amd64 (7.1.5-1kali1, automatic), lynx:amd64 (2.9.3-2, automatic), linux-binary-7.1.5+kali-amd64:amd64 (7.1.5-1kali1, automatic), libavcodec63:amd64 (7:9.0.2-1, automatic), libjim0.84:amd64 (0.84-2, automatic), mailcap:amd64 (3.77, automatic), systemd-tpm:amd64 (262-1, automatic), libobjc-16-dev:amd64 (16.2.0-3, automatic), liblouisutdml-bin:amd64 (2.12.0-8+b2, automatic), libavfilter12:amd64 (7:9.0.2-1, automatic), libshiboken6-py3-6.11:amd64 (6.11.2-2, automatic), libpoppler162:amd64 (26.07.0-2, automatic), cpp-16-x86-64-linux-gnu:amd64 (16.2.0-3, automatic), libavutil61:amd64 (7:9.0.2-1, automatic), cups-browsed:amd64 (1.28.17-7+b3, automatic), libfmt11:amd64 (11.1.1+ds1-2, automatic), cpp-16:amd64 (16.2.0-3, automatic), libtss2-rc0t64:amd64 (4.1.3-7, automatic), libsimdutf35:amd64 (9.1.2-1, automatic), ruby-ferrum:amd64 (0.18.0-1, automatic), lynx-common:amd64 (2.9.3-2, automatic), libleptonica6:amd64 (1.86.0-1+b1, automatic), cups-core-drivers:amd64 (2.4.18-1, automatic), python3-tenacity:amd64 (9.1.4-2, automatic), libswresample7:amd64 (7:9.0.2-1, automatic), fonts-roboto-slab:amd64 (2.002+20231012+ds-1, automatic), libucl1:amd64 (1.03+repack-6.1, automatic), photorec:amd64 (7.2-2, automatic), liblouisutdml-data:amd64 (2.12.0-8, automatic), libabsl20260526:amd64 (20260526.0-2+kali1, automatic), bc:amd64 (1.07.1-4, automatic), libavformat63:amd64 (7:9.0.2-1, automatic), python3-opentelemetry-api:amd64 (1.44.0-2, automatic), cups:amd64 (2.4.18-1, automatic), libfontembed1t64:amd64 (1.28.17-7+b3, automatic), liblouisutdml9t64:amd64 (2.12.0-8+b2, automatic), ruby-websocket-driver:amd64 (0.8.2-1, automatic), perl-modules-5.42:amd64 (5.42.3-1, automatic), python3-stamina:amd64 (26.1.0+dfsg-1, automatic), libpostal-data:amd64 (1.1.4-0kali1, automatic), python3-truststore:amd64 (0.10.4-2, automatic), libencode-perl:amd64 (3.24-1+b1, automatic), cups-server-common:amd64 (2.4.18-1, automatic), linux-base-7.1.5+kali-amd64:amd64 (7.1.5-1kali1, automatic), libhdf5-hl-320:amd64 (2.2.0+repack-5, automatic), libconfig15:amd64 (1.8.2+ds-1, automatic), python3-httpx2:amd64 (2.12.0-2, automatic)
+--
+Start-Date: 2026-10-23  09:45:19
+Commandline: apt install --only-upgrade php8.4-cli php8.4-common libapache2-mod-php8.4
+Requested-By: molina (1000)
+Upgrade: php8.4-mbstring:amd64 (8.4.24-1, 8.4.27-1), php8.4-xml:amd64 (8.4.24-1, 8.4.27-1), php8.4-zip:amd64 (8.4.24-1, 8.4.27-1), php8.4-readline:amd64 (8.4.24-1, 8.4.27-1), php8.4-gd:amd64 (8.4.24-1, 8.4.27-1), php8.4-mysql:amd64 (8.4.24-1, 8.4.27-1), libapache2-mod-php8.4:amd64 (8.4.24-1, 8.4.27-1), php8.4:amd64 (8.4.24-1, 8.4.27-1), php8.4-opcache:amd64 (8.4.24-1, 8.4.27-1), php8.4-curl:amd64 (8.4.24-1, 8.4.27-1), php8.4-common:amd64 (8.4.24-1, 8.4.27-1), php8.4-cli:amd64 (8.4.24-1, 8.4.27-1)
+
+<img width="442" height="65" alt="image" src="https://github.com/user-attachments/assets/4680d891-fd01-4dab-bb00-3c69d7a8d1fc" />
+
+
+> El primer comando muestra la fecha y hora de la última actualización de paquetes, sacada del registro de `apt`.
+
+<img width="619" height="152" alt="image" src="https://github.com/user-attachments/assets/49c5c13f-043f-4abc-8df4-8d8556bc1e6e" />
+
+El segundo muestra cuándo arrancó Apache por última vez. **La hora de arranque de Apache debe ser posterior a la de la actualización.** Si es anterior, Apache sigue usando el PHP viejo.
+
+<img width="459" height="65" alt="image" src="https://github.com/user-attachments/assets/5c7ce8d6-144c-438c-92a3-2ef5f0977770" />
 
 #### 7.4. Comprobación final desde la web
 
 Recarga `http://localhost/info.php` y confirma:
 
 - [ ] La versión mostrada coincide con la del paquete actualizado.
+
+<img width="595" height="377" alt="image" src="https://github.com/user-attachments/assets/7b3829a8-3fe1-48a4-b838-d021add41ed7" />
+
+<img width="564" height="125" alt="image" src="https://github.com/user-attachments/assets/108e619e-27b1-47ce-9e0a-4781c2c50184" />
+
 - [ ] `session.upload_progress.enabled` sigue en **Off**.
+
+<img width="641" height="476" alt="image" src="https://github.com/user-attachments/assets/78e7c2ef-26f9-4128-8152-d1eaa0f8937a" />
+
 - [ ] La página carga sin errores.
 
 #### 7.5. Limpieza
@@ -417,10 +458,32 @@ Borra la página de diagnóstico. Ya no la necesitas y, como vimos, es peligrosa
 ```bash
 sudo rm /var/www/html/info.php
 ```
+<img width="342" height="56" alt="image" src="https://github.com/user-attachments/assets/d5491bb5-54b8-4d29-a5ad-2339e4ae3a43" />
 
 Comprueba que `http://localhost/info.php` devuelve ahora un error **404 Not Found**.
 
+<img width="678" height="523" alt="image" src="https://github.com/user-attachments/assets/d59ecd58-c3d7-43e3-b65e-450d7e3a0723" />
+
 **Evidencia 6:** salida de `systemctl status`, de los dos comandos del apartado 7.3 y captura del error 404.
+
+grep -A3 "Start-Date" /var/log/apt/history.log | tail -n 8: 
+
+<img width="663" height="363" alt="image" src="https://github.com/user-attachments/assets/f8fee716-b9ad-4b7d-96d7-383449d0fe94" />
+
+Respuesta completa:
+
+Commandline: apt dist-upgrade -y
+Requested-By: molina (1000)
+Install: libperl5.42:amd64 (5.42.3-1, automatic), selinux-utils:amd64 (3.11-2.1, automatic), g++-16-x86-64-linux-gnu:amd64 (16.2.0-3, automatic), cups-filters:amd64 (1.28.17-7+b3, automatic), python3-flask-security:amd64 (5.9.1-1, automatic), python3-httpcore2:amd64 (2.12.0-2, automatic), g++-16:amd64 (16.2.0-3, automatic), gcc-16:amd64 (16.2.0-3, automatic), libtesseract5:amd64 (5.5.0-1.1, automatic), libgcc-16-dev:amd64 (16.2.0-3, automatic), libhdf5-320:amd64 (2.2.0+repack-5, automatic), libstdc++-16-dev:amd64 (16.2.0-3, automatic), libntfs-3g90:amd64 (1:2026.7.7-2, automatic), cups-common:amd64 (2.4.18-1, automatic), gcc-16-x86-64-linux-gnu:amd64 (16.2.0-3, automatic), libopenjph0.28:amd64 (0.28.1-1, automatic), libimath-3-2-30:amd64 (3.2.2-2+b1, automatic), libx265-216:amd64 (4.2-3, automatic), libcmark-gfm-extensions0.29.0.gfm.13:amd64 (0.29.0.gfm.13-7.1, automatic), libgeos3.15.0:amd64 (3.15.0-1, automatic), libbluray4:amd64 (1:1.5.0-3, automatic), fonts-font-awesome-legacy:amd64 (6-3, automatic), libpyside6-py3-6.11:amd64 (6.11.2-2, automatic), cups-client:amd64 (2.4.18-1, automatic), cups-ppdc:amd64 (2.4.18-1, automatic), ruby-sys-proctable:amd64 (1.3.0-1, automatic), python3-diskcache:amd64 (5.6.3-2, automatic), cups-daemon:amd64 (2.4.18-1, automatic), libproc2-1:amd64 (2:4.0.7-1, automatic), libcmark-gfm0.29.0.gfm.13:amd64 (0.29.0.gfm.13-7.1, automatic), libvidstab1.2:amd64 (1.1.1-4, automatic), libqpdf30:amd64 (12.4.2-1, automatic), libpoppler-cpp3:amd64 (26.07.0-2, automatic), libconfig++15:amd64 (1.8.2+ds-1, automatic), cups-filters-core-drivers:amd64 (1.28.17-7+b3, automatic), poppler-utils:amd64 (26.07.0-2, automatic), cups-ipp-utils:amd64 (2.4.18-1, automatic), libmupdf28.2:amd64 (1.28.2+ds1-2, automatic), linux-modules-7.1.5+kali-amd64:amd64 (7.1.5-1kali1, automatic), libcupsfilters1t64:amd64 (1.28.17-7+b3, automatic), ruby-websocket-extensions:amd64 (0.1.5-2, automatic), libswscale10:amd64 (7:9.0.2-1, automatic), linux-image-7.1.5+kali-amd64:amd64 (7.1.5-1kali1, automatic), lynx:amd64 (2.9.3-2, automatic), linux-binary-7.1.5+kali-amd64:amd64 (7.1.5-1kali1, automatic), libavcodec63:amd64 (7:9.0.2-1, automatic), libjim0.84:amd64 (0.84-2, automatic), mailcap:amd64 (3.77, automatic), systemd-tpm:amd64 (262-1, automatic), libobjc-16-dev:amd64 (16.2.0-3, automatic), liblouisutdml-bin:amd64 (2.12.0-8+b2, automatic), libavfilter12:amd64 (7:9.0.2-1, automatic), libshiboken6-py3-6.11:amd64 (6.11.2-2, automatic), libpoppler162:amd64 (26.07.0-2, automatic), cpp-16-x86-64-linux-gnu:amd64 (16.2.0-3, automatic), libavutil61:amd64 (7:9.0.2-1, automatic), cups-browsed:amd64 (1.28.17-7+b3, automatic), libfmt11:amd64 (11.1.1+ds1-2, automatic), cpp-16:amd64 (16.2.0-3, automatic), libtss2-rc0t64:amd64 (4.1.3-7, automatic), libsimdutf35:amd64 (9.1.2-1, automatic), ruby-ferrum:amd64 (0.18.0-1, automatic), lynx-common:amd64 (2.9.3-2, automatic), libleptonica6:amd64 (1.86.0-1+b1, automatic), cups-core-drivers:amd64 (2.4.18-1, automatic), python3-tenacity:amd64 (9.1.4-2, automatic), libswresample7:amd64 (7:9.0.2-1, automatic), fonts-roboto-slab:amd64 (2.002+20231012+ds-1, automatic), libucl1:amd64 (1.03+repack-6.1, automatic), photorec:amd64 (7.2-2, automatic), liblouisutdml-data:amd64 (2.12.0-8, automatic), libabsl20260526:amd64 (20260526.0-2+kali1, automatic), bc:amd64 (1.07.1-4, automatic), libavformat63:amd64 (7:9.0.2-1, automatic), python3-opentelemetry-api:amd64 (1.44.0-2, automatic), cups:amd64 (2.4.18-1, automatic), libfontembed1t64:amd64 (1.28.17-7+b3, automatic), liblouisutdml9t64:amd64 (2.12.0-8+b2, automatic), ruby-websocket-driver:amd64 (0.8.2-1, automatic), perl-modules-5.42:amd64 (5.42.3-1, automatic), python3-stamina:amd64 (26.1.0+dfsg-1, automatic), libpostal-data:amd64 (1.1.4-0kali1, automatic), python3-truststore:amd64 (0.10.4-2, automatic), libencode-perl:amd64 (3.24-1+b1, automatic), cups-server-common:amd64 (2.4.18-1, automatic), linux-base-7.1.5+kali-amd64:amd64 (7.1.5-1kali1, automatic), libhdf5-hl-320:amd64 (2.2.0+repack-5, automatic), libconfig15:amd64 (1.8.2+ds-1, automatic), python3-httpx2:amd64 (2.12.0-2, automatic)
+--
+Start-Date: 2026-10-23  09:45:19
+Commandline: apt install --only-upgrade php8.4-cli php8.4-common libapache2-mod-php8.4
+Requested-By: molina (1000)
+Upgrade: php8.4-mbstring:amd64 (8.4.24-1, 8.4.27-1), php8.4-xml:amd64 (8.4.24-1, 8.4.27-1), php8.4-zip:amd64 (8.4.24-1, 8.4.27-1), php8.4-readline:amd64 (8.4.24-1, 8.4.27-1), php8.4-gd:amd64 (8.4.24-1, 8.4.27-1), php8.4-mysql:amd64 (8.4.24-1, 8.4.27-1), libapache2-mod-php8.4:amd64 (8.4.24-1, 8.4.27-1), php8.4:amd64 (8.4.24-1, 8.4.27-1), php8.4-opcache:amd64 (8.4.24-1, 8.4.27-1), php8.4-curl:amd64 (8.4.24-1, 8.4.27-1), php8.4-common:amd64 (8.4.24-1, 8.4.27-1), php8.4-cli:amd64 (8.4.24-1, 8.4.27-1)
+
+systemctl show apache2 -p ActiveEnterTimestamp:
+
+<img width="457" height="73" alt="image" src="https://github.com/user-attachments/assets/45f5c64e-74d0-4382-bf35-655f62c99875" />
 
 ### 8. Paso 6: el informe de incidencia
 
