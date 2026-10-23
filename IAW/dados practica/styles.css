@@ -8,6 +8,7 @@ body {
     height: 100vh;
     margin: 0;
 }
+/*
 .container {
     background: white;
     border: 2px solid #333;
@@ -16,7 +17,7 @@ body {
     width: 300px;
     box-shadow: 0 4px 10px rgba(0,0,0,0.1);
 }
-
+*/
 /* esto crea la linea que está debajo del titulo de DADOS */
 h2 {
     text-align: center;
@@ -112,4 +113,3 @@ button {
 .icosaedro {
     clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
 }
-
