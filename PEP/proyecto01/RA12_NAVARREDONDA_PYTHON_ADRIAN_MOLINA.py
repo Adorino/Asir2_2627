@@ -1,12 +1,13 @@
 
-import random
+import random  
 
+# precio predeterminado 
 precio = 45.00
 
-# Datos de entrada
+# Datos de entrada, las preguntas
 edad = int(input("Introduce tu edad: "))
 tipo_dia = input("Tipo de día (laboral/fin de semana): ").lower()
-grupo = input("Tipo de grupo (familiar/colegio/individual): ").lower()
+grupo = input("Tipo de grupo (familiar/colegio/individual): ").lower() # el valor de lower hace que no ditinga netre mayuscula y minuscula
 residencia = input("Residencia (madrid/otra provincia): ").lower()
 dia_semana = input("Día de la semana (lunes-domingo): ").lower()
 socio = input("¿Eres socio? (si/no): ").lower()
@@ -40,15 +41,15 @@ elif 18 <= edad <= 25 and socio == "no":
 elif dia_semana in ["sábado", "domingo"] and grupo == "familiar":
     precio *= 1.05
 
-elif dia_semana == "miércoles" and residencia != "madrid":
+elif dia_semana == "miércoles" and residencia != "madrid":  # el ! será como un si no es madrid =
     precio *= 1.10
 
 elif tipo_dia == "fin de semana" and grupo == "individual" and residencia == "otra provincia":
     precio += 8
 
-print(f"\nPrecio final: {precio:.2f} euros")
+print(f"\nPrecio final: {precio:.2f} euros") # la f hará que se imprima de esa forma precisa, el 2f solo mostrará los dos primeros decimales por eso hay un . antes
 
-# Dibujar el precio en ASCII
+# Dibujar el precio en ASCII, se crearon los numero como pixel art, y arriba se imprimirá por asi decirlo, siguiendo el orden
 digitos = {
     "0": [" d888  ", "d8  8b ", "888 88 ", "888 88 ", "888 88 ", "d8  8b ", " d888  "],
     "1": ["  88 ", " 888 ", "  88 ", "  88 ", "  88 ", "  88 ", "888888"],
