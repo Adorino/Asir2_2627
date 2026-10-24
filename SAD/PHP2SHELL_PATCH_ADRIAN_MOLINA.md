@@ -488,6 +488,11 @@ systemctl show apache2 -p ActiveEnterTimestamp:
 
 ### 8. Paso 6: el informe de incidencia
 
+El informe en pdf se encuentra aqui (abrir en nueva pagina para no perder esta, supongo)
+
+https://github.com/Adorino/Asir2_2627/blob/main/SAD/Informe_PHP2Shell_Adrian_Molina%20(2).pdf
+----------------------------------------
+
 En una empresa, un parche que no está documentado es un parche que no existe: nadie puede comprobar que se hizo, ni cuándo, ni cómo. Por eso terminarás con un informe breve, como el que entregarías a tu responsable.
 
 #### 8.1. Estructura del informe
