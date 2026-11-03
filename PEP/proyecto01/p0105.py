@@ -16,8 +16,8 @@ nombre = "jose"
 m18 = True
 piso = True
 
-if (m18 and piso);
-print ("eres muy mayor")
+if (m18 and piso):
+    print ("eres muy mayor")
 
-if (m18 or piso or (nombre == jose));
-print ("eres mayor")
+if (m18 or piso or (nombre == "jose") ):
+    print ("eres mayor")
