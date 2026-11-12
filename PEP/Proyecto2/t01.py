@@ -1,5 +1,5 @@
 from turtle import *
-for i in range(10):
+for i in range(5):
     forward(75)
     left(72)
     forward(75)
