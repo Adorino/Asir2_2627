@@ -1,5 +1,5 @@
 <?php
-// 1. Generamos una carta aleatoria
+// Generamos una carta aleatoria
 function carta() {
     $n = rand(2, 14);
     if ($n == 14) $v = "A";
@@ -14,7 +14,7 @@ function carta() {
     else $palo = "D";
     return (object)["valor" => $v, "palo" => $palo];
 }
-// 2. Generamos las cinco cartas de cada jugador
+// Generamos las cinco cartas de cada jugador
 function mano() {
     $m = new stdClass();
     $m->c1 = carta();
@@ -29,7 +29,7 @@ function obtenerCarta($m, $posicion) {
     $propiedad = "c" . $posicion;
     return $m->$propiedad;
 }
-// 3. Convertimos las cartas en números para compararlas
+// Convertimos las cartas en números para compararlas
 function peso($v) {
     if ($v == "A") return 14;
     if ($v == "K") return 13;
@@ -37,10 +37,10 @@ function peso($v) {
     if ($v == "J") return 11;
     return (int)$v;
 }
-// 4. Generamos las manos
+// Generamos las manos
 $mano1 = mano();
 $mano2 = mano();
-// 5. Ordenamos las cartas de mayor a menor
+// Ordenamos las cartas de mayor a menor
 function ordenar($m) {
     for ($i = 1; $i <= 5; $i++) {
         for ($j = $i + 1; $j <= 5; $j++) {
@@ -57,7 +57,7 @@ function ordenar($m) {
 }
 $mano1 = ordenar($mano1);
 $mano2 = ordenar($mano2);
-// 6. Comparamos las cartas
+// Comparamos las cartas
 $resultado = "";
 $ganador = 0;
 for ($i = 1; $i <= 5; $i++) {
@@ -80,7 +80,7 @@ for ($i = 1; $i <= 5; $i++) {
         $resultado .= "Empate, pasamos a la siguiente carta.\n";
     }
 }
-// 7. Resultado final
+// Resultado final
 if ($ganador == 0) {
     $resultado .= "\nEmpate.";
 } else {
