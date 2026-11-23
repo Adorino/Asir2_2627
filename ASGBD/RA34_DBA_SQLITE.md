@@ -109,12 +109,154 @@ Las películas se identifican por su título y se registran también su año de 
 Por último, algunas películas no se desarrollan en ningún reino concreto, pero las que sí lo hacen se ambientan en uno solo, y un mismo reino puede servir de escenario a muchas películas.
 [Crear en sqlite la base de datos]
 
+-- Activar el soporte de claves foráneas en SQLite
+PRAGMA foreign_keys = ON;
+
+-- 1. Tabla Reinos
+CREATE TABLE Reinos (
+    nombre TEXT PRIMARY KEY,
+    moneda_oficial TEXT NOT NULL
+);
+
+-- 2. Tabla Princesas
+-- Toda princesa es natural de un único reino (NOT NULL)
+CREATE TABLE Princesas (
+    nombre TEXT PRIMARY KEY,
+    color_pelo TEXT NOT NULL,
+    nombre_reino TEXT NOT NULL,
+    FOREIGN KEY (nombre_reino) REFERENCES Reinos(nombre)
+        ON UPDATE CASCADE
+        ON DELETE RESTRICT
+);
+
+-- 3. Tabla Peliculas
+-- Algunas películas no tienen reino (permite NULL)
+CREATE TABLE Peliculas (
+    titulo TEXT PRIMARY KEY,
+    anio_estreno INTEGER NOT NULL,
+    duracion_minutos INTEGER NOT NULL CHECK (duracion_minutos > 0),
+    nombre_reino TEXT,
+    FOREIGN KEY (nombre_reino) REFERENCES Reinos(nombre)
+        ON UPDATE CASCADE
+        ON DELETE SET NULL
+);
+
+-- 4. Tabla intermedia (Relación N:M Princesas - Peliculas)
+CREATE TABLE Princesa_Pelicula (
+    nombre_princesa TEXT NOT NULL,
+    titulo_pelicula TEXT NOT NULL,
+    minutos_aparicion INTEGER NOT NULL CHECK (minutos_aparicion > 0),
+    PRIMARY KEY (nombre_princesa, titulo_pelicula),
+    FOREIGN KEY (nombre_princesa) REFERENCES Princesas(nombre)
+        ON UPDATE CASCADE
+        ON DELETE CASCADE,
+    FOREIGN KEY (titulo_pelicula) REFERENCES Peliculas(titulo)
+        ON UPDATE CASCADE
+        ON DELETE CASCADE
+);
+
+INSERT INTO Reinos (nombre, moneda_oficial) VALUES 
+    ('Arendelle', 'Corona'),
+    ('Atlántica', 'Concha de oro'),
+    ('Corona', 'Moneda solar'); -- Reino sin princesas aún
+
+INSERT INTO Princesas (nombre, color_pelo, nombre_reino) VALUES 
+    ('Elsa', 'Rubio platino', 'Arendelle'),
+    ('Ariel', 'Pelirrojo', 'Atlántica');
+
+INSERT INTO Peliculas (titulo, anio_estreno, duracion_minutos, nombre_reino) VALUES 
+    ('Frozen', 2013, 102, 'Arendelle'),
+    ('La Sirenita', 1989, 83, 'Atlántica'),
+    ('Ralph rompe Internet', 2018, 112, NULL); -- Película sin reino concreto
+
+INSERT INTO Princesa_Pelicula (nombre_princesa, titulo_pelicula, minutos_aparicion) VALUES 
+    ('Elsa', 'Frozen', 45),
+    ('Ariel', 'La Sirenita', 52),
+    ('Elsa', 'Ralph rompe Internet', 3),   -- Cameo
+    ('Ariel', 'Ralph rompe Internet', 3);  -- Cameo
 
 #### GTA6
 Una empresa de entretenimiento quiere guardar en una base de datos el universo criminal del juego GTA VI. De cada personaje interesa su nombre, que lo identifica, y su apodo en el mundo criminal. Todo personaje pertenece a una única banda, aunque hay bandas en las que todavía no consta ningún personaje registrado. Las bandas se distinguen por su nombre y tienen una actividad ilícita principal.
 Los atracos se identifican por su título y se registran también su tipo (robo de banco, contrabando, secuestro…) y su recompensa en dólares. Todo personaje del catálogo participa al menos en un atraco, y un mismo personaje puede participar en varios, incluso con pocos minutos de protagonismo. Todo atraco tiene al menos un personaje en su reparto.
 Por último, algunos atracos no se desarrollan en el territorio de ninguna banda concreta, pero los que sí lo hacen tienen lugar en el territorio de una sola, y una misma banda puede ser escenario de muchos atracos.
 [Crear en sqlite la base de datos]
+
+-- Activar restricciones de claves foráneas
+PRAGMA foreign_keys = ON;
+
+-- 1. Tabla Bandas
+CREATE TABLE Bandas (
+    nombre TEXT PRIMARY KEY,
+    actividad_ilicita TEXT NOT NULL
+);
+
+-- 2. Tabla Personajes
+-- Todo personaje pertenece obligatoriamente a una única banda (NOT NULL)
+CREATE TABLE Personajes (
+    nombre TEXT PRIMARY KEY,
+    apodo TEXT NOT NULL,
+    nombre_banda TEXT NOT NULL,
+    FOREIGN KEY (nombre_banda) REFERENCES Bandas(nombre)
+        ON UPDATE CASCADE
+        ON DELETE RESTRICT
+);
+
+-- 3. Tabla Atracos
+-- Algunos atracos no tienen territorio de banda (permite NULL)
+CREATE TABLE Atracos (
+    titulo TEXT PRIMARY KEY,
+    tipo TEXT NOT NULL,
+    recompensa_dolares INTEGER NOT NULL CHECK (recompensa_dolares > 0),
+    nombre_banda_territorio TEXT,
+    FOREIGN KEY (nombre_banda_territorio) REFERENCES Bandas(nombre)
+        ON UPDATE CASCADE
+        ON DELETE SET NULL
+);
+
+-- 4. Tabla intermedia (Relación N:M Personajes - Atracos)
+CREATE TABLE Participaciones (
+    nombre_personaje TEXT NOT NULL,
+    titulo_atraco TEXT NOT NULL,
+    minutos_protagonismo INTEGER NOT NULL CHECK (minutos_protagonismo > 0),
+    PRIMARY KEY (nombre_personaje, titulo_atraco),
+    FOREIGN KEY (nombre_personaje) REFERENCES Personajes(nombre)
+        ON UPDATE CASCADE
+        ON DELETE CASCADE,
+    FOREIGN KEY (titulo_atraco) REFERENCES Atracos(titulo)
+        ON UPDATE CASCADE
+        ON DELETE CASCADE
+);
+
+-- Bandas inventadas (incluyendo una sin personajes registrados)
+INSERT INTO Bandas (nombre, actividad_ilicita) VALUES 
+    ('Los Caimanes del Pantano', 'Contrabando fluvial'),
+    ('Sindicato Neón', 'Ciberdelitos y lavado de activos'),
+    ('Hermanos del Asfalto', 'Robo de vehículos de lujo'),
+    ('Espectro Nocturno', 'Tráfico de arte'); -- Banda sin personajes aún
+
+-- Personajes inventados
+INSERT INTO Personajes (nombre, apodo, nombre_banda) VALUES 
+    ('Mateo Vance', 'El Sombra', 'Los Caimanes del Pantano'),
+    ('Valeria Cruz', 'Chispa', 'Sindicato Neón'),
+    ('Dante Moretti', 'El Mecánico', 'Hermanos del Asfalto'),
+    ('Elena Rostova', 'Víbora', 'Sindicato Neón');
+
+-- Atracos inventados (incluyendo uno sin territorio de ninguna banda)
+INSERT INTO Atracos (titulo, tipo, recompensa_dolares, nombre_banda_territorio) VALUES 
+    ('Golpe al Ferry de Vice', 'Contrabando', 450000, 'Los Caimanes del Pantano'),
+    ('Asalto a la Bóveda Central', 'Robo de banco', 1200000, 'Sindicato Neón'),
+    ('Rescate en el Puente Sur', 'Secuestro', 300000, NULL), -- Sin territorio de banda
+    ('Carrera Fantasma', 'Robo de vehículos', 600000, 'Hermanos del Asfalto');
+
+-- Participaciones en atracos (incluyendo cameos de pocos minutos)
+INSERT INTO Participaciones (nombre_personaje, titulo_atraco, minutos_protagonismo) VALUES 
+    ('Mateo Vance', 'Golpe al Ferry de Vice', 35),
+    ('Valeria Cruz', 'Asalto a la Bóveda Central', 42),
+    ('Elena Rostova', 'Asalto a la Bóveda Central', 28),
+    ('Dante Moretti', 'Carrera Fantasma', 40),
+    ('Mateo Vance', 'Rescate en el Puente Sur', 20),
+    ('Valeria Cruz', 'Golpe al Ferry de Vice', 3),       -- Participación breve (3 min)
+    ('Dante Moretti', 'Asalto a la Bóveda Central', 4);  -- Participación breve (4 min)
 
 
 
