@@ -72,9 +72,24 @@ Se ha encontrado un trozo de log de consultas a la base de datos durante el día
 
 #### 3.1. Realización de una copia de seguridad con el nombre `frutitas_bonitas_bonitas.db`
 
+<img width="627" height="306" alt="image" src="https://github.com/user-attachments/assets/3cd96d4f-dc18-4b90-91f2-6cd48240dd64" />
+
 #### 3.2. Realiza la restauración desde la copia de seguridad
 
+<img width="667" height="48" alt="image" src="https://github.com/user-attachments/assets/2843cc67-0932-4dcc-9c1b-8ba377268477" />
+
+Se puede hacer de esta forma o con el comando de cp frutitas_bonitas_bonitas.db frutitas.db
+
 #### 3.3. Automatización de backups
+
+Entraremos en /home/alumno/backup_frutitas.sh con nano /home/alumno/backup_frutitas.sh y en el añadimos el siguiente script.
+
+<img width="595" height="250" alt="image" src="https://github.com/user-attachments/assets/ee8d9d28-8051-4cf2-945d-c9a1a8fde217" />
+
+<img width="553" height="204" alt="image" src="https://github.com/user-attachments/assets/4c436c90-2414-4319-9a03-386426103077" />
+
+<img width="654" height="443" alt="image" src="https://github.com/user-attachments/assets/23297e6d-fd2d-4f9b-85bc-f60c4e067936" />
+
 
 Crea un script para backups automáticos que se ejecute todos los días a las 23:59:59.
 
