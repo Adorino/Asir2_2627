@@ -99,3 +99,22 @@ Crea un script para backups automáticos que se ejecute todos los días a las 23
 - ¿Qué mecanismos adicionales usarías para proteger una base de datos SQLite en un entorno de producción?
 - ¿Qué diferencia existe entre los modos de journaling como DELETE, TRUNCATE y WAL en SQLite?
 
+### Ejercicios de clase.
+
+#### Princesas Disney 
+Una empresa de ocio quiere guardar en una base de datos su catálogo de princesas de Disney. De cada princesa interesa su nombre, que la identifica, y su color de pelo. Toda princesa es natural de un único reino, aunque hay reinos en los que todavía no consta ninguna princesa. Los reinos se distinguen por su nombre y tienen una moneda oficial.
+
+Las películas se identifican por su título y se registran también su año de estreno y su duración en minutos. Toda princesa del catálogo aparece al menos en una película, y una misma princesa puede aparecer en varias, incluso en cameos de pocos minutos. Toda película tiene al menos una princesa en su reparto.
+
+Por último, algunas películas no se desarrollan en ningún reino concreto, pero las que sí lo hacen se ambientan en uno solo, y un mismo reino puede servir de escenario a muchas películas.
+[Crear en sqlite la base de datos]
+
+
+#### GTA6
+Una empresa de entretenimiento quiere guardar en una base de datos el universo criminal del juego GTA VI. De cada personaje interesa su nombre, que lo identifica, y su apodo en el mundo criminal. Todo personaje pertenece a una única banda, aunque hay bandas en las que todavía no consta ningún personaje registrado. Las bandas se distinguen por su nombre y tienen una actividad ilícita principal.
+Los atracos se identifican por su título y se registran también su tipo (robo de banco, contrabando, secuestro…) y su recompensa en dólares. Todo personaje del catálogo participa al menos en un atraco, y un mismo personaje puede participar en varios, incluso con pocos minutos de protagonismo. Todo atraco tiene al menos un personaje en su reparto.
+Por último, algunos atracos no se desarrollan en el territorio de ninguna banda concreta, pero los que sí lo hacen tienen lugar en el territorio de una sola, y una misma banda puede ser escenario de muchos atracos.
+[Crear en sqlite la base de datos]
+
+
+
