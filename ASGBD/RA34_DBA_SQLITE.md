@@ -33,12 +33,17 @@ Crea las siguientes tablas básicas con las restricciones adecuadas:
 
 <img width="667" height="182" alt="image" src="https://github.com/user-attachments/assets/24f9d205-61b5-4a10-84e9-44b22bb8f42b" />
 
+<img width="665" height="109" alt="image" src="https://github.com/user-attachments/assets/883cb50f-5e7f-48b5-8aee-99bd6699b4be" />
+
+
 - **Melocotones**:
   - `id_melocoton` (INTEGER, PK, AUTOINCREMENT): identificador único para cada melocotón.
   - `tipo` (TEXT, NOT NULL): tipo de melocotón.
   - `suavidad` (BOOLEAN, NOT NULL): indica si el melocotón es suave (1) o no (0).
 
  <img width="665" height="43" alt="image" src="https://github.com/user-attachments/assets/3fdb09c0-54df-4f6c-93e7-6c18df229405" />
+
+<img width="665" height="80" alt="image" src="https://github.com/user-attachments/assets/528926f0-fbfd-426a-93fa-af8e843ce6ad" />
 
 - **Caquis**:
   - `id_caqui` (INTEGER, PK, AUTOINCREMENT): identificador único para cada caqui.
@@ -51,6 +56,10 @@ Crea las siguientes tablas básicas con las restricciones adecuadas:
 Dejamos las foreign key al final para evitar problemas.
 
 <img width="667" height="105" alt="image" src="https://github.com/user-attachments/assets/ccbcfcf9-f590-4449-a9a8-c0eb51408639" />
+
+<img width="668" height="71" alt="image" src="https://github.com/user-attachments/assets/cb5eba63-e1dc-4630-a584-463f35c8f62a" />
+
+
 
 #### 1.2. Tamaño y más
 
@@ -67,6 +76,16 @@ La página 1 contiene la cabecera de la base de datos (100 bytes) y la tabla mae
 Se ha encontrado un trozo de log de consultas a la base de datos durante el día 27 de octubre de 2024 (enlace arriba). Se pide qué optimizaciones realizarías y por qué, para mejorar la base de datos en función de la información que te ofrece el log, y justifícalo.
 
 **PISTA:** utiliza `EXPLAIN QUERY PLAN` y revisa todos los pragmas de SQLite.
+
+<img width="667" height="299" alt="image" src="https://github.com/user-attachments/assets/6647beba-397a-4924-a125-e0ccce52791d" />
+
+Para la optimización, he creado índices.
+
+<img width="661" height="232" alt="image" src="https://github.com/user-attachments/assets/dcefaf0c-9f99-4496-9230-a79bfaf60701" />
+
+También se pueden llevar a cabos configuraciones PRAGMA para cambiar requisitos o uso de RAM.
+
+<img width="410" height="219" alt="image" src="https://github.com/user-attachments/assets/d5b69722-e997-438a-bb79-661b3a47ce4b" />
 
 ### 3. Copias de seguridad y restauración (2.5 puntos)
 
@@ -90,14 +109,16 @@ Entraremos en /home/alumno/backup_frutitas.sh con nano /home/alumno/backup_fruti
 
 <img width="654" height="443" alt="image" src="https://github.com/user-attachments/assets/23297e6d-fd2d-4f9b-85bc-f60c4e067936" />
 
-
 Crea un script para backups automáticos que se ejecute todos los días a las 23:59:59.
 
 ### 4. Preguntas sin ChatGPT ni IAs (0.5 puntos)
 
-- ¿Cómo impactan los cambios en el PRAGMA en el rendimiento y la seguridad de la base de datos?
-- ¿Qué mecanismos adicionales usarías para proteger una base de datos SQLite en un entorno de producción?
-- ¿Qué diferencia existe entre los modos de journaling como DELETE, TRUNCATE y WAL en SQLite?
+- ¿Cómo impactan los cambios en el PRAGMA en el rendimiento y la seguridad de la base de datos?= Aceleran la base de datos usando más RAM y menos disco, aunque reducen ligeramente la durabilidad ante cortes eléctricos y refuerzan la integridad con foreign_keys = ON.
+
+- ¿Qué mecanismos adicionales usarías para proteger una base de datos SQLite en un entorno de producción?= •  Aplicar permisos estrictos de archivo, cifrado (SQLCipher), consultas parametrizadas, conexiones de solo lectura y copias en caliente (VACUUM INTO).
+
+- ¿Qué diferencia existe entre los modos de journaling como DELETE, TRUNCATE y WAL en SQLite?= • DELETE borra el journal y TRUNCATE lo vacía a cero (bloqueando lecturas), mientras WAL escribe en un archivo aparte permitiendo lecturas y escrituras concurrentes.
+
 
 ### Ejercicios de clase.
 
