@@ -163,82 +163,33 @@ Los atracos se identifican por su título y se registran también su tipo (robo 
 Por último, algunos atracos no se desarrollan en el territorio de ninguna banda concreta, pero los que sí lo hacen tienen lugar en el territorio de una sola, y una misma banda puede ser escenario de muchos atracos.
 [Crear en sqlite la base de datos]
 
--- Activar restricciones de claves foráneas
-PRAGMA foreign_keys = ON;
+Activamos las foreign keys en pragma para usarlas.
 
--- 1. Tabla Bandas
-CREATE TABLE Bandas (
-    nombre TEXT PRIMARY KEY,
-    actividad_ilicita TEXT NOT NULL
-);
+<img width="399" height="52" alt="image" src="https://github.com/user-attachments/assets/e99d39a0-4089-4ca5-be67-b7dbcc79c49d" />
 
--- 2. Tabla Personajes
--- Todo personaje pertenece obligatoriamente a una única banda (NOT NULL)
-CREATE TABLE Personajes (
-    nombre TEXT PRIMARY KEY,
-    apodo TEXT NOT NULL,
-    nombre_banda TEXT NOT NULL,
-    FOREIGN KEY (nombre_banda) REFERENCES Bandas(nombre)
-        ON UPDATE CASCADE
-        ON DELETE RESTRICT
-);
+Tabla de bandas: 
 
--- 3. Tabla Atracos
--- Algunos atracos no tienen territorio de banda (permite NULL)
-CREATE TABLE Atracos (
-    titulo TEXT PRIMARY KEY,
-    tipo TEXT NOT NULL,
-    recompensa_dolares INTEGER NOT NULL CHECK (recompensa_dolares > 0),
-    nombre_banda_territorio TEXT,
-    FOREIGN KEY (nombre_banda_territorio) REFERENCES Bandas(nombre)
-        ON UPDATE CASCADE
-        ON DELETE SET NULL
-);
+<img width="669" height="38" alt="image" src="https://github.com/user-attachments/assets/cbca13e4-ce76-4f10-8a42-d72ad12e5796" />
 
--- 4. Tabla intermedia (Relación N:M Personajes - Atracos)
-CREATE TABLE Participaciones (
-    nombre_personaje TEXT NOT NULL,
-    titulo_atraco TEXT NOT NULL,
-    minutos_protagonismo INTEGER NOT NULL CHECK (minutos_protagonismo > 0),
-    PRIMARY KEY (nombre_personaje, titulo_atraco),
-    FOREIGN KEY (nombre_personaje) REFERENCES Personajes(nombre)
-        ON UPDATE CASCADE
-        ON DELETE CASCADE,
-    FOREIGN KEY (titulo_atraco) REFERENCES Atracos(titulo)
-        ON UPDATE CASCADE
-        ON DELETE CASCADE
-);
+Tabla personajes:
 
--- Bandas inventadas (incluyendo una sin personajes registrados)
-INSERT INTO Bandas (nombre, actividad_ilicita) VALUES 
-    ('Los Caimanes del Pantano', 'Contrabando fluvial'),
-    ('Sindicato Neón', 'Ciberdelitos y lavado de activos'),
-    ('Hermanos del Asfalto', 'Robo de vehículos de lujo'),
-    ('Espectro Nocturno', 'Tráfico de arte'); -- Banda sin personajes aún
+<img width="667" height="49" alt="image" src="https://github.com/user-attachments/assets/b128b71a-7fab-481f-ad79-a2db621f9208" />
 
--- Personajes inventados
-INSERT INTO Personajes (nombre, apodo, nombre_banda) VALUES 
-    ('Mateo Vance', 'El Sombra', 'Los Caimanes del Pantano'),
-    ('Valeria Cruz', 'Chispa', 'Sindicato Neón'),
-    ('Dante Moretti', 'El Mecánico', 'Hermanos del Asfalto'),
-    ('Elena Rostova', 'Víbora', 'Sindicato Neón');
+Tabla atracos:
 
--- Atracos inventados (incluyendo uno sin territorio de ninguna banda)
-INSERT INTO Atracos (titulo, tipo, recompensa_dolares, nombre_banda_territorio) VALUES 
-    ('Golpe al Ferry de Vice', 'Contrabando', 450000, 'Los Caimanes del Pantano'),
-    ('Asalto a la Bóveda Central', 'Robo de banco', 1200000, 'Sindicato Neón'),
-    ('Rescate en el Puente Sur', 'Secuestro', 300000, NULL), -- Sin territorio de banda
-    ('Carrera Fantasma', 'Robo de vehículos', 600000, 'Hermanos del Asfalto');
+<img width="665" height="52" alt="image" src="https://github.com/user-attachments/assets/ed45dc59-5a58-4a10-a846-e0efb9503d27" />
 
--- Participaciones en atracos (incluyendo cameos de pocos minutos)
-INSERT INTO Participaciones (nombre_personaje, titulo_atraco, minutos_protagonismo) VALUES 
-    ('Mateo Vance', 'Golpe al Ferry de Vice', 35),
-    ('Valeria Cruz', 'Asalto a la Bóveda Central', 42),
-    ('Elena Rostova', 'Asalto a la Bóveda Central', 28),
-    ('Dante Moretti', 'Carrera Fantasma', 40),
-    ('Mateo Vance', 'Rescate en el Puente Sur', 20),
-    ('Valeria Cruz', 'Golpe al Ferry de Vice', 3),       -- Participación breve (3 min)
-    ('Dante Moretti', 'Asalto a la Bóveda Central', 4);  -- Participación breve (4 min)
+Tabla de participaciones:
 
+<img width="670" height="91" alt="image" src="https://github.com/user-attachments/assets/709150cf-2a2c-40e6-8bf0-292b24a191bd" />
 
+Insertamos los datos:
+
+<img width="666" height="65" alt="image" src="https://github.com/user-attachments/assets/7593b062-1655-4025-bc5c-e0f9d6ef58bf" />
+
+<img width="667" height="69" alt="image" src="https://github.com/user-attachments/assets/8e8544c4-6d5c-4ef1-a0dd-c8f60f818b07" />
+
+<img width="663" height="83" alt="image" src="https://github.com/user-attachments/assets/b06ab70c-0405-4053-b037-7591d3c798a5" />
+
+<img width="663" height="101" alt="image" src="https://github.com/user-attachments/assets/0df706db-a1d0-484d-8fc1-31a9a5496b3d" />
 
