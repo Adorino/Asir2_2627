@@ -6,19 +6,19 @@ Eres el DBA (administrador) de una base de datos SQLite para una pequeña aplica
 
 Log de consultas de referencia (para el apartado de optimización): https://drive.google.com/file/d/1RToxJsbzJo_mOdjcGh6ff2DMFP7RsQAA/view
 
-### Finalidad
+## Finalidad
 
 1. Gestionar y configurar el entorno de la base de datos SQLite.
 2. Optimizar el rendimiento de la base de datos a través de diferentes técnicas de ajuste.
 3. Implementar copias de seguridad y restauración.
 4. Aplicar técnicas de seguridad para proteger los datos sensibles.
 
-### Requisitos del entorno
+## Requisitos del entorno
 
 - Instalación de SQLite: asegúrate de tener SQLite instalado en tu entorno de trabajo. Puedes verificarlo con `sqlite3 --version`.
 - Crea una base de datos llamada `frutitas.db` que almacenará la información de mandarinas, melocotones y caquis.
 
-### 1. Configuración de la base de datos (2 puntos)
+## 1. Configuración de la base de datos (2 puntos)
 
 #### 1.1. Creación de tablas y estructura
 
@@ -61,7 +61,7 @@ Dejamos las foreign key al final para evitar problemas.
 
 
 
-#### 1.2. Tamaño y más
+### 1.2. Tamaño y más
 
 Justifica cuánto ocupa la base de datos en disco. ¿En qué momento aumenta de tamaño si se mete más info? ¿Cómo harías algo para optimizar eso?
 
@@ -71,7 +71,7 @@ Justifica cuánto ocupa la base de datos en disco. ¿En qué momento aumenta de 
 
 La página 1 contiene la cabecera de la base de datos (100 bytes) y la tabla maestra (sqlite_schema) donde se guarda la estructura (CREATE TABLE) de tus tablas (Mandarinas, Melocotones, Caquis). Cada tabla nueva y cada índice (como los creados automáticamente por AUTOINCREMENT) reserva al menos una página completa (4 KB), aunque todavía esté vacía o tenga pocos registros.
 
-### 2. Optimización del rendimiento y mantenimiento (5 puntos)
+## 2. Optimización del rendimiento y mantenimiento (5 puntos)
 
 Se ha encontrado un trozo de log de consultas a la base de datos durante el día 27 de octubre de 2024 (enlace arriba). Se pide qué optimizaciones realizarías y por qué, para mejorar la base de datos en función de la información que te ofrece el log, y justifícalo.
 
@@ -87,19 +87,23 @@ También se pueden llevar a cabos configuraciones PRAGMA para cambiar requisitos
 
 <img width="410" height="219" alt="image" src="https://github.com/user-attachments/assets/d5b69722-e997-438a-bb79-661b3a47ce4b" />
 
-### 3. Copias de seguridad y restauración (2.5 puntos)
+## 3. Copias de seguridad y restauración (2.5 puntos)
 
-#### 3.1. Realización de una copia de seguridad con el nombre `frutitas_bonitas_bonitas.db`
+### 3.1. Realización de una copia de seguridad con el nombre `frutitas_bonitas_bonitas.db`
+
+Yo usé el comando de { sqlite3 origen.db ".backup 'copia_seguridad.db'" } , cambiándolo con mis valores, como se puede ver se creó la copia de seguridad.
 
 <img width="627" height="306" alt="image" src="https://github.com/user-attachments/assets/3cd96d4f-dc18-4b90-91f2-6cd48240dd64" />
 
-#### 3.2. Realiza la restauración desde la copia de seguridad
+### 3.2. Realiza la restauración desde la copia de seguridad
+
+Usaria este comando: sqlite3 base_destino.db ".restore 'copia_seguridad.db'"
 
 <img width="667" height="48" alt="image" src="https://github.com/user-attachments/assets/2843cc67-0932-4dcc-9c1b-8ba377268477" />
 
 Se puede hacer de esta forma o con el comando de cp frutitas_bonitas_bonitas.db frutitas.db
 
-#### 3.3. Automatización de backups
+### 3.3. Automatización de backups
 
 Entraremos en /home/alumno/backup_frutitas.sh con nano /home/alumno/backup_frutitas.sh y en el añadimos el siguiente script.
 
@@ -111,18 +115,21 @@ Entraremos en /home/alumno/backup_frutitas.sh con nano /home/alumno/backup_fruti
 
 Crea un script para backups automáticos que se ejecute todos los días a las 23:59:59.
 
-### 4. Preguntas sin ChatGPT ni IAs (0.5 puntos)
+## 4. Preguntas sin ChatGPT ni IAs (0.5 puntos)
 
-- ¿Cómo impactan los cambios en el PRAGMA en el rendimiento y la seguridad de la base de datos?= Aceleran la base de datos usando más RAM y menos disco, aunque reducen ligeramente la durabilidad ante cortes eléctricos y refuerzan la integridad con foreign_keys = ON.
+### ¿Cómo impactan los cambios en el PRAGMA en el rendimiento y la seguridad de la base de datos?
+  Aceleran la base de datos usando más RAM y menos disco, aunque reducen ligeramente la durabilidad ante cortes eléctricos y refuerzan la integridad con foreign_keys = ON.
 
-- ¿Qué mecanismos adicionales usarías para proteger una base de datos SQLite en un entorno de producción?= •  Aplicar permisos estrictos de archivo, cifrado (SQLCipher), consultas parametrizadas, conexiones de solo lectura y copias en caliente (VACUUM INTO).
+### ¿Qué mecanismos adicionales usarías para proteger una base de datos SQLite en un entorno de producción?
+  Aplicar permisos estrictos de archivo, cifrado (SQLCipher), consultas parametrizadas, conexiones de solo lectura y copias en caliente (VACUUM INTO).
 
-- ¿Qué diferencia existe entre los modos de journaling como DELETE, TRUNCATE y WAL en SQLite?= • DELETE borra el journal y TRUNCATE lo vacía a cero (bloqueando lecturas), mientras WAL escribe en un archivo aparte permitiendo lecturas y escrituras concurrentes.
+### ¿Qué diferencia existe entre los modos de journaling como DELETE, TRUNCATE y WAL en SQLite?
+  DELETE borra el journal y TRUNCATE lo vacía a cero (bloqueando lecturas), mientras WAL escribe en un archivo aparte permitiendo lecturas y escrituras concurrentes.
 
 
-### Ejercicios de clase.
+## Ejercicios de clase.
 
-#### Princesas Disney 
+### Princesas Disney 
 Una empresa de ocio quiere guardar en una base de datos su catálogo de princesas de Disney. De cada princesa interesa su nombre, que la identifica, y su color de pelo. Toda princesa es natural de un único reino, aunque hay reinos en los que todavía no consta ninguna princesa. Los reinos se distinguen por su nombre y tienen una moneda oficial.
 
 Las películas se identifican por su título y se registran también su año de estreno y su duración en minutos. Toda princesa del catálogo aparece al menos en una película, y una misma princesa puede aparecer en varias, incluso en cameos de pocos minutos. Toda película tiene al menos una princesa en su reparto.
@@ -157,7 +164,7 @@ Añadir valores:
 <img width="663" height="70" alt="image" src="https://github.com/user-attachments/assets/779db346-2da1-4454-b790-bd766cbf2a6e" />
 
 
-#### GTA6
+### GTA6
 Una empresa de entretenimiento quiere guardar en una base de datos el universo criminal del juego GTA VI. De cada personaje interesa su nombre, que lo identifica, y su apodo en el mundo criminal. Todo personaje pertenece a una única banda, aunque hay bandas en las que todavía no consta ningún personaje registrado. Las bandas se distinguen por su nombre y tienen una actividad ilícita principal.
 Los atracos se identifican por su título y se registran también su tipo (robo de banco, contrabando, secuestro…) y su recompensa en dólares. Todo personaje del catálogo participa al menos en un atraco, y un mismo personaje puede participar en varios, incluso con pocos minutos de protagonismo. Todo atraco tiene al menos un personaje en su reparto.
 Por último, algunos atracos no se desarrollan en el territorio de ninguna banda concreta, pero los que sí lo hacen tienen lugar en el territorio de una sola, y una misma banda puede ser escenario de muchos atracos.
