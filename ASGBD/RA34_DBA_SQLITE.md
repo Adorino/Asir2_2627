@@ -130,71 +130,32 @@ Las películas se identifican por su título y se registran también su año de 
 Por último, algunas películas no se desarrollan en ningún reino concreto, pero las que sí lo hacen se ambientan en uno solo, y un mismo reino puede servir de escenario a muchas películas.
 [Crear en sqlite la base de datos]
 
--- Activar el soporte de claves foráneas en SQLite
-PRAGMA foreign_keys = ON;
+Primero he activado las foreign keys
 
--- 1. Tabla Reinos
-CREATE TABLE Reinos (
-    nombre TEXT PRIMARY KEY,
-    moneda_oficial TEXT NOT NULL
-);
+<img width="487" height="86" alt="image" src="https://github.com/user-attachments/assets/0abf2769-c1b2-4a2b-8876-707b60b90692" />
 
--- 2. Tabla Princesas
--- Toda princesa es natural de un único reino (NOT NULL)
-CREATE TABLE Princesas (
-    nombre TEXT PRIMARY KEY,
-    color_pelo TEXT NOT NULL,
-    nombre_reino TEXT NOT NULL,
-    FOREIGN KEY (nombre_reino) REFERENCES Reinos(nombre)
-        ON UPDATE CASCADE
-        ON DELETE RESTRICT
-);
+Tabla de reinos:
 
--- 3. Tabla Peliculas
--- Algunas películas no tienen reino (permite NULL)
-CREATE TABLE Peliculas (
-    titulo TEXT PRIMARY KEY,
-    anio_estreno INTEGER NOT NULL,
-    duracion_minutos INTEGER NOT NULL CHECK (duracion_minutos > 0),
-    nombre_reino TEXT,
-    FOREIGN KEY (nombre_reino) REFERENCES Reinos(nombre)
-        ON UPDATE CASCADE
-        ON DELETE SET NULL
-);
+<img width="665" height="34" alt="image" src="https://github.com/user-attachments/assets/c47def0f-a806-422d-8dc5-84d47f726725" />
 
--- 4. Tabla intermedia (Relación N:M Princesas - Peliculas)
-CREATE TABLE Princesa_Pelicula (
-    nombre_princesa TEXT NOT NULL,
-    titulo_pelicula TEXT NOT NULL,
-    minutos_aparicion INTEGER NOT NULL CHECK (minutos_aparicion > 0),
-    PRIMARY KEY (nombre_princesa, titulo_pelicula),
-    FOREIGN KEY (nombre_princesa) REFERENCES Princesas(nombre)
-        ON UPDATE CASCADE
-        ON DELETE CASCADE,
-    FOREIGN KEY (titulo_pelicula) REFERENCES Peliculas(titulo)
-        ON UPDATE CASCADE
-        ON DELETE CASCADE
-);
+Tabla de princesas:
 
-INSERT INTO Reinos (nombre, moneda_oficial) VALUES 
-    ('Arendelle', 'Corona'),
-    ('Atlántica', 'Concha de oro'),
-    ('Corona', 'Moneda solar'); -- Reino sin princesas aún
+<img width="665" height="48" alt="image" src="https://github.com/user-attachments/assets/4742319f-2c73-4996-a775-355542612bab" />
 
-INSERT INTO Princesas (nombre, color_pelo, nombre_reino) VALUES 
-    ('Elsa', 'Rubio platino', 'Arendelle'),
-    ('Ariel', 'Pelirrojo', 'Atlántica');
+Tabla de Peliculas:
 
-INSERT INTO Peliculas (titulo, anio_estreno, duracion_minutos, nombre_reino) VALUES 
-    ('Frozen', 2013, 102, 'Arendelle'),
-    ('La Sirenita', 1989, 83, 'Atlántica'),
-    ('Ralph rompe Internet', 2018, 112, NULL); -- Película sin reino concreto
+<img width="671" height="49" alt="image" src="https://github.com/user-attachments/assets/df3f5815-1559-4b3b-a12f-86f2519fabbb" />
 
-INSERT INTO Princesa_Pelicula (nombre_princesa, titulo_pelicula, minutos_aparicion) VALUES 
-    ('Elsa', 'Frozen', 45),
-    ('Ariel', 'La Sirenita', 52),
-    ('Elsa', 'Ralph rompe Internet', 3),   -- Cameo
-    ('Ariel', 'Ralph rompe Internet', 3);  -- Cameo
+Tabla de resumen:
+
+<img width="661" height="86" alt="image" src="https://github.com/user-attachments/assets/7ed71935-be67-4cfc-96cb-f7ee6a254e14" />
+
+Añadir valores:
+
+<img width="667" height="118" alt="image" src="https://github.com/user-attachments/assets/f0bf423d-cdac-42c9-af9e-0530ca4d8a3a" />
+
+<img width="663" height="70" alt="image" src="https://github.com/user-attachments/assets/779db346-2da1-4454-b790-bd766cbf2a6e" />
+
 
 #### GTA6
 Una empresa de entretenimiento quiere guardar en una base de datos el universo criminal del juego GTA VI. De cada personaje interesa su nombre, que lo identifica, y su apodo en el mundo criminal. Todo personaje pertenece a una única banda, aunque hay bandas en las que todavía no consta ningún personaje registrado. Las bandas se distinguen por su nombre y tienen una actividad ilícita principal.
